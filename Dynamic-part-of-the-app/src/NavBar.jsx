@@ -14,7 +14,7 @@ export function NavBar(){
               <Link to="/budget">Add/Update your budget</Link>
             </div>
             <div>
-              <Link to="/catagory">View Spending in Categories</Link>
+              <Link to="/category">View Spending in Categories</Link>
             </div>
           </nav>
         </>

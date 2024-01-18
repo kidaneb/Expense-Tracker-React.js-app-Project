@@ -1,16 +1,24 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { MyContext } from "./SharedContext";
+import { LOCAL_STORAGE_KEY } from "../Budget/Budget";
 
 export function Home() {
   const { infoArray, setInfoArray } = useContext(MyContext);
 
   const budgetRef = useRef(0);
   const { budget, setBudget } = useContext(MyContext);
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(infoArray));
+  }, [infoArray]);
+
   useEffect(() => {
     budgetRef.current.textContent = `$${budget}`;
   });
+
   return (
     <>
+      {console.log(budget)}
       <div className="current-balance">Your Current Balance is $9000</div>
       <div className="budget-expense-display">
         <div className="budget-display">

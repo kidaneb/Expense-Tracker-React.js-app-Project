@@ -1,6 +1,8 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { MyContext } from "../Home/SharedContext";
 import { Navigate, useNavigate } from "react-router-dom";
+
+export const LOCAL_STORAGE_KEY = "INFO_ARRAY";
 
 export function Budget() {
   const navigate = useNavigate();
@@ -12,6 +14,10 @@ export function Budget() {
 
   const addBudgetLabelRef = useRef("");
   const addBudgetRef = useRef(0);
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(infoArray));
+  }, [infoArray]);
 
   // Set Budget Submit Function
 
@@ -32,7 +38,8 @@ export function Budget() {
       },
       ...currentInfoArray,
     ]);
-    setBudget((currentBudget) => (currentBudget = setBudgetRef.current.value));
+
+    setBudget((currentBudget) => setBudgetRef.current.value);
 
     navigate("/");
   }
@@ -75,20 +82,21 @@ export function Budget() {
 
   //Budget Reset Function
 
- function budgetReset(){
-  setInfoArray((currentInfoArray) => [
-    {
-      label: "Budget has been reset to 0",
-      type: "Budget Reset",
-      amount: budget,
-      category: "Budget Reset",
-      date: new Date().toISOString().split("T")[0],
-      id: crypto.randomUUID(),
-    },
-    ...currentInfoArray,
-  ]);
-  setBudget((currentBudget)=>(currentBudget = 0))
- }
+  function budgetReset() {
+    setInfoArray((currentInfoArray) => [
+      {
+        label: "Budget has been reset to 0",
+        type: "Budget Reset",
+        amount: budget,
+        category: "Budget Reset",
+        date: new Date().toISOString().split("T")[0],
+        id: crypto.randomUUID(),
+      },
+      ...currentInfoArray,
+    ]);
+    setBudget((currentBudget) => currentBudget = 0);
+    navigate("/");
+  }
 
   return (
     <>
@@ -117,7 +125,9 @@ export function Budget() {
 
       <div className="reset-budget">
         <h2>Reset budget</h2>
-        <button className="btn danger" onClick={budgetReset}>Reset Budget</button>
+        <button className="btn danger" onClick={budgetReset}>
+          Reset Budget
+        </button>
       </div>
     </>
   );
