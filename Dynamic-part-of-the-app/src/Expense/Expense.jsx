@@ -1,4 +1,7 @@
+import { useRef } from "react";
+
 export function Expense() {
+  const addExpenseLabelRef = useRef("");
   return (
     <>
       <form>

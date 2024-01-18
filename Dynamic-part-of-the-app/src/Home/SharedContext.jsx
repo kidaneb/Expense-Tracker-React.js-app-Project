@@ -9,17 +9,12 @@ export function SharedContext({ children }) {
     return storedArray || [];
   });
 
- const [budget, setBudget] = useState(0);
+ const [budget, setBudget] = useState(()=>{
+    const storedBudget = JSON.parse(localStorage.getItem("currentBudget"));
+    return (storedBudget || 0);
+ });
  
-useEffect(()=>{
-  const currentBudget = infoArray.reduce((sum,element)=>{
-    if(element.category === "Budget"){
-      return(sum + parseFloat(element.amount));
-    }
-  },0)
-  setBudget((cb)=> currentBudget || 0);
-  console.log(budget)
-},[])
+
 
   return (
     <MyContext.Provider value={{ budget, setBudget, infoArray, setInfoArray }}>

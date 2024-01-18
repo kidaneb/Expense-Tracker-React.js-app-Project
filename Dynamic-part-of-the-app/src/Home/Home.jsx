@@ -11,6 +11,9 @@ export function Home() {
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(infoArray));
   }, [infoArray]);
+  useEffect(()=>{
+    localStorage.setItem("currentBudget",budget)
+  },[budget, setBudget])
 
   useEffect(() => {
     budgetRef.current.textContent = `$${budget}`;
@@ -18,7 +21,7 @@ export function Home() {
 
   return (
     <>
-      {console.log(budget)}
+     
       <div className="current-balance">Your Current Balance is $9000</div>
       <div className="budget-expense-display">
         <div className="budget-display">

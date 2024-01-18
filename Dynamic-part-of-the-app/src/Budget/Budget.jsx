@@ -18,6 +18,9 @@ export function Budget() {
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(infoArray));
   }, [infoArray]);
+  useEffect(()=>{
+    localStorage.setItem("currentBudget",budget)
+  },[budget, setBudget])
 
   // Set Budget Submit Function
 
