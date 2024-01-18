@@ -14,10 +14,16 @@ export function SharedContext({ children }) {
     return (storedBudget || 0);
  });
  
+const [expense, setExpense] = useState(()=>{
+  
+  const storedExpense = JSON.parse(localStorage.getItem("currentExpense"));
+  
+  return (storedExpense || 0);
+});
 
 
   return (
-    <MyContext.Provider value={{ budget, setBudget, infoArray, setInfoArray }}>
+    <MyContext.Provider value={{ budget, setBudget, infoArray, setInfoArray, expense, setExpense }}>
       {children}
     </MyContext.Provider>
   );

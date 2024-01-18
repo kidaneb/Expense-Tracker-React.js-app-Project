@@ -1,30 +1,69 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
+import { MyContext } from "../Home/SharedContext";
+import { useNavigate } from "react-router-dom";
 
 export function Expense() {
-  const addExpenseLabelRef = useRef("");
+  const { infoArray, setInfoArray } = useContext(MyContext);
+  const { expense, setExpense } = useContext(MyContext);
+  const addExpenseLableRef = useRef("");
+  const addExpenseAmountRef = useRef(0);
+  const addExpenseCategoryRef = useRef("Uncategorized");
+  const navigate = useNavigate();
+
+  function addExpenseSubmit(e) {
+    e.preventDefault();
+    if (
+      addExpenseLableRef.current.value === "" ||
+      addExpenseAmountRef.current.value === ""
+    ) {
+      return;
+    }
+
+    setInfoArray((currentInfoArray) => 
+     [
+        {
+          label: addExpenseLableRef.current.value,
+          type: "Expense",
+          amount: addExpenseAmountRef.current.value,
+          category: addExpenseCategoryRef.current.value,
+          date: new Date().toISOString().split("T")[0],
+          id: crypto.randomUUID(),
+        },
+        ...currentInfoArray
+      ]
+    );
+    setExpense(currentExpense => parseFloat(currentExpense) + parseFloat(addExpenseAmountRef.current.value));
+    navigate("/")
+  }
+
   return (
     <>
-      <form>
+    {JSON.stringify(infoArray)}
+      <form onSubmit={addExpenseSubmit}>
         <h2>Add an Expense</h2>
 
         <div>
           <div className="expense-label">
             <div>Label</div>
-            <input type="text" />
+            <input type="text" ref={addExpenseLableRef} />
           </div>
 
           <div className="expense-amount">
             <div>Amount</div>
-            <input type="number" />
+            <input type="number" ref={addExpenseAmountRef} />
           </div>
 
           <div className="expense-category">
             <div>Select Category</div>
-            <input type="text" />
+            <input
+              type="text"
+              ref={addExpenseCategoryRef}
+              defaultValue="UnCategorized"
+            />
             <button className="btn danger">Remove Category</button>
           </div>
         </div>
-        <button className="btn danger">Add Expense</button>
+        <button className="btn">Add Expense</button>
       </form>
 
       <div className="reset-expenses">

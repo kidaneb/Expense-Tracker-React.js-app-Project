@@ -3,11 +3,15 @@ import { MyContext } from "./SharedContext";
 import { LOCAL_STORAGE_KEY } from "../Budget/Budget";
 
 export function Home() {
+  //BUDGET RELATED DECLARATIONS
   const { infoArray, setInfoArray } = useContext(MyContext);
-
   const budgetRef = useRef(0);
   const { budget, setBudget } = useContext(MyContext);
 
+  // EXPENSE RELATED DECLARATIONS
+  const expenseRef = useRef(0);
+  const {expense, setExpense} = useContext(MyContext);
+// BUDGET RELATED EFFECTS
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(infoArray));
   }, [infoArray]);
@@ -17,8 +21,15 @@ export function Home() {
 
   useEffect(() => {
     budgetRef.current.textContent = `$${budget}`;
-  });
+  },[budget]);
 
+  // EXPENSE RELATED EFFECTS
+  useEffect(()=>{
+    expenseRef.current.textContent = "$"+expense;
+  })
+  useEffect(()=>{
+    localStorage.setItem("currentExpense", expense);
+  },[expense])
   return (
     <>
      
@@ -31,7 +42,7 @@ export function Home() {
 
         <div className="expense-display">
           <div className="expense-title">Expense</div>
-          <div className="expense-value">$450</div>
+          <div className="expense-value" ref={expenseRef}></div>
         </div>
       </div>
       <div className="transaction-history-container">

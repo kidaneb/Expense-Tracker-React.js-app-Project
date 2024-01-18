@@ -27,7 +27,14 @@ export const router = createBrowserRouter([
           </SharedContext>
         ),
       },
-      { path: "/expense", element: <Expense /> },
+      {
+        path: "/expense",
+        element: (
+          <SharedContext>
+            <Expense />
+          </SharedContext>
+        ),
+      },
       { path: "/category", element: <Category /> },
     ],
   },
