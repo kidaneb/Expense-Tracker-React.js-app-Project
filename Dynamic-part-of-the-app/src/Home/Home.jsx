@@ -10,30 +10,47 @@ export function Home() {
 
   // EXPENSE RELATED DECLARATIONS
   const expenseRef = useRef(0);
-  const {expense, setExpense} = useContext(MyContext);
-// BUDGET RELATED EFFECTS
+  const { expense, setExpense } = useContext(MyContext);
+
+  //CURRENT BALANCE DECLARATION
+
+const [currentBalance, setCurrentBalance] = useState(0);
+  
+
+  //MODAL RELATED DECLARATION
+
+  // BUDGET RELATED EFFECTS
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(infoArray));
   }, [infoArray]);
-  useEffect(()=>{
-    localStorage.setItem("currentBudget",budget)
-  },[budget, setBudget])
+  useEffect(() => {
+    localStorage.setItem("currentBudget", budget);
+  }, [budget, setBudget]);
 
   useEffect(() => {
     budgetRef.current.textContent = `$${budget}`;
-  },[budget]);
+  }, [budget]);
 
   // EXPENSE RELATED EFFECTS
-  useEffect(()=>{
-    expenseRef.current.textContent = "$"+expense;
-  })
-  useEffect(()=>{
+  useEffect(() => {
+    expenseRef.current.textContent = "$" + expense;
+  });
+  useEffect(() => {
     localStorage.setItem("currentExpense", expense);
-  },[expense])
+  }, [expense]);
+// CURRENT BALANCE CALCULATION
+
+useEffect(()=>{
+  setCurrentBalance((cb)=> budget - expense)
+},[budget, expense])
+
+
+
+
   return (
     <>
-     
-      <div className="current-balance">Your Current Balance is $9000</div>
+    
+      <div className="current-balance">Your Current Balance is ${currentBalance}</div>
       <div className="budget-expense-display">
         <div className="budget-display">
           <div className="budget-title">Budget/Income</div>
@@ -51,7 +68,7 @@ export function Home() {
           <ul>
             {infoArray.map((transaction) => {
               return (
-                <li key={transaction.id}>
+                <li key={transaction.id} >
                   {transaction.label}{" "}
                   {`${transaction.category === "Budget" ? "+" : "-"}$${
                     transaction.amount

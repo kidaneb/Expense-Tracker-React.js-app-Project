@@ -1,17 +1,53 @@
+import { useContext, useState } from "react";
+import { MyContext } from "../Home/SharedContext";
+
 export function Category() {
+  const { infoArray, setInfoArray } = useContext(MyContext);
+  const {budget, setBudget} = useContext(MyContext)
+
+  const [categorySpending, setCategorySpending] = useState(0);
+  let categoryArray = [
+    ...new Set(infoArray.map((item) => item.category)),
+  ].reverse();
+  categoryArray = categoryArray.filter((category) => category !== "Budget");
+  console.log(categoryArray);
   return (
     <>
-      <div className="spending-catagory-title">Spending Catagory</div>
-      <div className="spending-catagories">
-        <div className="catagory">catagory-1</div>
-        <div className="catagory">catagory-1</div>
-        <div className="catagory">catagory-1</div>
-        <div className="catagory">catagory-1</div>
-        <div className="catagory">catagory-1</div>
-        <div className="catagory">catagory-1</div>
-        <div className="catagory">catagory-1</div>
-        <div className="catagory">catagory-1</div>
-        <div className="catagory">catagory-1</div>
+      <div className="spending-category-title">Spending Catagory</div>
+      <div className="spending-categories">
+        {
+          <div className="category">
+            <div className="category-name">Budget</div>
+            <div className="category-spending">{budget}</div>
+          </div>
+        }
+        {categoryArray.map((element, index) => {
+          let sum = 0;
+          return (
+            <div className="category" key={index}>
+              <div className="category-name">{element}</div>
+              {infoArray.map((item) => {
+                if (item.category === element) {
+                  sum += parseFloat(item.amount);
+                }
+              })}
+              <div className="category-spending">{sum}</div>
+            </div>
+          );
+        })}
+
+        {/* <div className="category">
+          <div className="category-name">category-1</div>
+          <div className="category-spending">1234</div>
+        </div>
+        <div className="category">category-1</div>
+        <div className="category">category-1</div>
+        <div className="category">category-1</div>
+        <div className="category">category-1</div>
+        <div className="category">category-1</div>
+        <div className="category">category-1</div>
+        <div className="category">category-1</div>
+        <div className="category">catagory-1</div> */}
       </div>
     </>
   );
