@@ -4,7 +4,8 @@ import App from "./App.jsx";
 import "./styles.css";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./Router.jsx";
-import { SharedContext } from "./Home/SharedContext.jsx";
+import { SharedContext } from "./SharedContext.jsx";
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { Header } from "./Header";
 import { NavBar } from "./NavBar";
 import { useContext } from "react";
-import { MyContext, SharedContext } from "./Home/SharedContext";
+import { MyContext, SharedContext } from "./SharedContext.jsx";
 
 export function NavLayout() {
   const { infoArray, setInfoArray } = useContext(MyContext);

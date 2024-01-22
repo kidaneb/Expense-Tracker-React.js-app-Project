@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { LOCAL_STORAGE_KEY } from "../Budget/Budget";
+import { LOCAL_STORAGE_KEY } from "./Budget/Budget";
 
 export const MyContext = createContext();
 
@@ -11,33 +11,35 @@ export function SharedContext({ children }) {
   });
   // Spending Category Array
   const [spendingCategoryArray, setSpendingCategoryArray] = useState(() => {
-    const storedArray = JSON.parse(localStorage.getItem("spendingCategoryArray"));
+    const storedArray = JSON.parse(
+      localStorage.getItem("spendingCategoryArray")
+    );
     return storedArray || [];
   });
-//Budget
+  //Budget
   const [budget, setBudget] = useState(() => {
     const storedBudget = JSON.parse(localStorage.getItem("currentBudget"));
     return storedBudget || 0;
   });
   // Reset Budget
   const [isbudgetReset, setIsBudgetReset] = useState(false);
-  
-// Expense
+
+  // Expense
   const [expense, setExpense] = useState(() => {
     const storedExpense = JSON.parse(localStorage.getItem("currentExpense"));
     return storedExpense || 0;
   });
-//Reset Expense
-const [isExpenseReset, setIsExpenseReset] = useState(false);
+  //Reset Expense
+  const [isExpenseReset, setIsExpenseReset] = useState(false);
 
-//  Modal
-const [isModal, setIsModal] = useState(false);
-const [transactionItemId, setTransactionItemId] = useState(0);
-let Id;
-function transactionClicked(id){
-  setIsModal(true);
-  setTransactionItemId(id)
-}
+  //  Modal
+  const [isModal, setIsModal] = useState(false);
+  const [transactionItemId, setTransactionItemId] = useState(0);
+  let Id;
+  function transactionClicked(id) {
+    setIsModal(true);
+    setTransactionItemId(id);
+  }
 
   return (
     <MyContext.Provider
@@ -57,7 +59,7 @@ function transactionClicked(id){
         isModal,
         setIsModal,
         transactionClicked,
-        transactionItemId
+        transactionItemId,
       }}
     >
       {children}

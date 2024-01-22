@@ -1,11 +1,13 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { MyContext } from "./SharedContext";
+
 import { LOCAL_STORAGE_KEY } from "../Budget/Budget";
+import { MyContext } from "../SharedContext";
 
 export function Home() {
   //BUDGET RELATED DECLARATIONS
   const { infoArray, setInfoArray } = useContext(MyContext);
-  const {spendingCategoryArray, setSpendingCategoryArray} = useContext(MyContext)
+  const { spendingCategoryArray, setSpendingCategoryArray } =
+    useContext(MyContext);
   const budgetRef = useRef(0);
   const { budget, setBudget } = useContext(MyContext);
 
@@ -15,11 +17,10 @@ export function Home() {
 
   //CURRENT BALANCE DECLARATION
 
-const [currentBalance, setCurrentBalance] = useState(0);
-  
+  const [currentBalance, setCurrentBalance] = useState(0);
 
   //MODAL RELATED DECLARATION
-const {isModal, setIsModal} = useContext(MyContext);
+  const { isModal, setIsModal } = useContext(MyContext);
   // BUDGET RELATED EFFECTS
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(infoArray));
@@ -34,7 +35,10 @@ const {isModal, setIsModal} = useContext(MyContext);
 
   // EXPENSE RELATED EFFECTS
   useEffect(() => {
-    localStorage.setItem("spendingCategoryArray", JSON.stringify(spendingCategoryArray));
+    localStorage.setItem(
+      "spendingCategoryArray",
+      JSON.stringify(spendingCategoryArray)
+    );
   }, [spendingCategoryArray]);
   useEffect(() => {
     expenseRef.current.textContent = "$" + expense;
@@ -42,25 +46,25 @@ const {isModal, setIsModal} = useContext(MyContext);
   useEffect(() => {
     localStorage.setItem("currentExpense", expense);
   }, [expense]);
-// CURRENT BALANCE CALCULATION
+  // CURRENT BALANCE CALCULATION
 
-useEffect(()=>{
-  setCurrentBalance((cb)=> budget - expense)
-},[budget, expense])
+  useEffect(() => {
+    setCurrentBalance((cb) => budget - expense);
+  }, [budget, expense]);
 
+  // Transaction function
 
-// Transaction function 
+  // function transactionClicked(id){
 
-// function transactionClicked(id){
-  
-//   setIsModal(true)
-// }
-const {transactionClicked } = useContext(MyContext);
+  //   setIsModal(true)
+  // }
+  const { transactionClicked } = useContext(MyContext);
 
   return (
     <>
-    
-      <div className="current-balance">Your Current Balance is ${currentBalance}</div>
+      <div className="current-balance">
+        Your Current Balance is ${currentBalance}
+      </div>
       <div className="budget-expense-display">
         <div className="budget-display">
           <div className="budget-title">Budget/Income</div>
@@ -78,11 +82,17 @@ const {transactionClicked } = useContext(MyContext);
           <ul>
             {infoArray.map((transaction) => {
               return (
-                <li className="transaction-list-item" key={transaction.id} onClick={()=>transactionClicked(transaction.id)}>
+                <li
+                  className="transaction-list-item"
+                  key={transaction.id}
+                  onClick={() => transactionClicked(transaction.id)}
+                >
                   {transaction.label}{" "}
-                  {`${transaction.category === "Budget" || "Expense Reset" ? "+" : "-"}$${
-                    transaction.amount
-                  }`}
+                  {`${
+                    transaction.category === "Budget" || "Expense Reset"
+                      ? "+"
+                      : "-"
+                  }$${transaction.amount}`}
                 </li>
               );
             })}

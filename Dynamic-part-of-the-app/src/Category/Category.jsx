@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { MyContext } from "../Home/SharedContext";
+import { MyContext } from "../SharedContext";
 
 export function Category() {
   const { infoArray, setInfoArray } = useContext(MyContext);

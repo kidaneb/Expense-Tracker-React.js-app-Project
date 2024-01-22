@@ -1,17 +1,17 @@
 import { useContext, useRef, useState } from "react";
-import { MyContext } from "../Home/SharedContext";
+import { MyContext } from "../SharedContext";
 import { useNavigate } from "react-router-dom";
 
 export function Expense() {
   const { infoArray, setInfoArray } = useContext(MyContext);
-  const { spendingCategoryArray, setSpendingCategoryArray } = useContext(MyContext);
+  const { spendingCategoryArray, setSpendingCategoryArray } =
+    useContext(MyContext);
   const { expense, setExpense } = useContext(MyContext);
   const addExpenseLableRef = useRef("");
   const addExpenseAmountRef = useRef(0);
   const addExpenseCategoryRef = useRef("Uncategorized");
   const { isExpenseReset, setIsExpenseReset } = useContext(MyContext);
   const navigate = useNavigate();
-
 
   function addExpenseSubmit(e) {
     e.preventDefault();
@@ -53,11 +53,8 @@ export function Expense() {
     navigate("/");
   }
 
-  
-
   return (
     <>
-     
       <form onSubmit={addExpenseSubmit}>
         <h2>Add an Expense</h2>
 
@@ -87,7 +84,7 @@ export function Expense() {
 
       <div className="reset-expenses">
         <h2>Reset Your Expenses</h2>
-        <button className="btn danger" onClick={()=>setIsExpenseReset(true)}>
+        <button className="btn danger" onClick={() => setIsExpenseReset(true)}>
           Reset Expenses
         </button>
       </div>

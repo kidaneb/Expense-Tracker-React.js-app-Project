@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { MyContext } from "../Home/SharedContext";
+import { MyContext } from "../SharedContext";
 import { Navigate, useNavigate } from "react-router-dom";
 
 export const LOCAL_STORAGE_KEY = "INFO_ARRAY";
@@ -9,7 +9,7 @@ export function Budget() {
   const { infoArray, setInfoArray } = useContext(MyContext);
   const setBudgetRef = useRef();
   const { budget, setBudget } = useContext(MyContext);
-  const {isbudgetReset, setIsBudgetReset} = useContext(MyContext);
+  const { isbudgetReset, setIsBudgetReset } = useContext(MyContext);
   //Add To Budget Declarations
 
   const addBudgetLabelRef = useRef("");
@@ -81,8 +81,6 @@ export function Budget() {
   }
 
   //Budget Reset Function
-  
-  
 
   return (
     <>
@@ -110,7 +108,7 @@ export function Budget() {
 
       <div className="reset-budget">
         <h2>Reset budget</h2>
-        <button className="btn danger" onClick={()=>setIsBudgetReset(true)}>
+        <button className="btn danger" onClick={() => setIsBudgetReset(true)}>
           Reset Budget
         </button>
       </div>
