@@ -5,6 +5,7 @@ import { LOCAL_STORAGE_KEY } from "../Budget/Budget";
 export function Home() {
   //BUDGET RELATED DECLARATIONS
   const { infoArray, setInfoArray } = useContext(MyContext);
+  const {spendingCategoryArray, setSpendingCategoryArray} = useContext(MyContext)
   const budgetRef = useRef(0);
   const { budget, setBudget } = useContext(MyContext);
 
@@ -32,6 +33,9 @@ const [currentBalance, setCurrentBalance] = useState(0);
   }, [budget]);
 
   // EXPENSE RELATED EFFECTS
+  useEffect(() => {
+    localStorage.setItem("spendingCategoryArray", JSON.stringify(spendingCategoryArray));
+  }, [spendingCategoryArray]);
   useEffect(() => {
     expenseRef.current.textContent = "$" + expense;
   });

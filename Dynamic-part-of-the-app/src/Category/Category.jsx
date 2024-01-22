@@ -3,12 +3,13 @@ import { MyContext } from "../Home/SharedContext";
 
 export function Category() {
   const { infoArray, setInfoArray } = useContext(MyContext);
+  const {spendingCategoryArray, isSpendingCategoryArray} = useContext(MyContext);
   const {budget, setBudget} = useContext(MyContext)
 
-  const [categorySpending, setCategorySpending] = useState(0);
-  let categoryArray = [
-    ...new Set(infoArray.map((item) => item.category)),
-  ].reverse();
+  const {isResetExpense, setIsResetExpense} = useContext(MyContext);
+  
+  
+  let categoryArray = isResetExpense ? [] : [...new Set(spendingCategoryArray.map((item) => item.category)),].reverse();
   categoryArray = categoryArray.filter((category) => category !== "Budget");
   console.log(categoryArray);
   return (

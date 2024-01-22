@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 export const LOCAL_STORAGE_KEY = "INFO_ARRAY";
 
+
 export function Budget() {
   const navigate = useNavigate();
   const { infoArray, setInfoArray } = useContext(MyContext);
@@ -18,6 +19,8 @@ export function Budget() {
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(infoArray));
   }, [infoArray]);
+
+  
  
 
   // Set Budget Submit Function

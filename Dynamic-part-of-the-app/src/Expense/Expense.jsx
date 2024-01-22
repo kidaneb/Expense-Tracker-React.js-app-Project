@@ -1,15 +1,18 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { MyContext } from "../Home/SharedContext";
 import { useNavigate } from "react-router-dom";
 
 export function Expense() {
   const { infoArray, setInfoArray } = useContext(MyContext);
+  const { spendingCategoryArray, setSpendingCategoryArray } = useContext(MyContext);
   const { expense, setExpense } = useContext(MyContext);
   const addExpenseLableRef = useRef("");
   const addExpenseAmountRef = useRef(0);
   const addExpenseCategoryRef = useRef("Uncategorized");
+  const { isResetExpense, setIsResetExpense } = useContext(MyContext);
   const navigate = useNavigate();
 
+  
   function addExpenseSubmit(e) {
     e.preventDefault();
     if (
@@ -19,26 +22,60 @@ export function Expense() {
       return;
     }
 
-    setInfoArray((currentInfoArray) => 
-     [
-        {
-          label: addExpenseLableRef.current.value,
-          type: "Expense",
-          amount: addExpenseAmountRef.current.value,
-          category: addExpenseCategoryRef.current.value,
-          date: new Date().toISOString().split("T")[0],
-          id: crypto.randomUUID(),
-        },
-        ...currentInfoArray
-      ]
+    setInfoArray((currentInfoArray) => [
+      {
+        label: addExpenseLableRef.current.value,
+        type: "Expense",
+        amount: addExpenseAmountRef.current.value,
+        category: addExpenseCategoryRef.current.value,
+        date: new Date().toISOString().split("T")[0],
+        id: crypto.randomUUID(),
+      },
+      ...currentInfoArray,
+    ]);
+    setSpendingCategoryArray((currentArray) => [
+      {
+        label: addExpenseLableRef.current.value,
+        type: "Expense",
+        amount: addExpenseAmountRef.current.value,
+        category: addExpenseCategoryRef.current.value,
+        date: new Date().toISOString().split("T")[0],
+        id: crypto.randomUUID(),
+      },
+      ...currentArray,
+    ]);
+    setExpense(
+      (currentExpense) =>
+        parseFloat(currentExpense) +
+        parseFloat(addExpenseAmountRef.current.value)
     );
-    setExpense(currentExpense => parseFloat(currentExpense) + parseFloat(addExpenseAmountRef.current.value));
-    navigate("/")
+    setIsResetExpense(false);
+    navigate("/");
+  }
+
+  function resetExpense() {
+    setInfoArray((currentInfoArray) => [
+      {
+        label: "Expense has been reset to 0",
+        type: "Expense Reset",
+        amount: expense,
+        category: "Expense Reset",
+        date: new Date().toISOString().split("T")[0],
+        id: crypto.randomUUID(),
+      },
+      ...currentInfoArray,
+    ]);
+    setExpense((ce) => (ce = 0));
+
+    setIsResetExpense(true);
+
+    setSpendingCategoryArray((currentArray) => []);
+    navigate("/");
   }
 
   return (
     <>
-    {JSON.stringify(infoArray)}
+      {JSON.stringify(infoArray)}
       <form onSubmit={addExpenseSubmit}>
         <h2>Add an Expense</h2>
 
@@ -68,7 +105,9 @@ export function Expense() {
 
       <div className="reset-expenses">
         <h2>Reset Your Expenses</h2>
-        <button className="btn danger">Reset Expenses</button>
+        <button className="btn danger" onClick={resetExpense}>
+          Reset Expenses
+        </button>
       </div>
     </>
   );
