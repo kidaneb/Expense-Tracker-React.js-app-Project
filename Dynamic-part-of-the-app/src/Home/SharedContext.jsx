@@ -19,29 +19,45 @@ export function SharedContext({ children }) {
     const storedBudget = JSON.parse(localStorage.getItem("currentBudget"));
     return storedBudget || 0;
   });
+  // Reset Budget
+  const [isbudgetReset, setIsBudgetReset] = useState(false);
+  
 // Expense
   const [expense, setExpense] = useState(() => {
     const storedExpense = JSON.parse(localStorage.getItem("currentExpense"));
     return storedExpense || 0;
   });
 //Reset Expense
-const [isResetExpense, setIsResetExpense] = useState(false);
+const [isExpenseReset, setIsExpenseReset] = useState(false);
 
-
+//  Modal
+const [isModal, setIsModal] = useState(false);
+const [transactionItemId, setTransactionItemId] = useState(0);
+let Id;
+function transactionClicked(id){
+  setIsModal(true);
+  setTransactionItemId(id)
+}
 
   return (
     <MyContext.Provider
       value={{
         budget,
         setBudget,
+        isbudgetReset,
+        setIsBudgetReset,
         infoArray,
         setInfoArray,
         spendingCategoryArray,
         setSpendingCategoryArray,
         expense,
         setExpense,
-        isResetExpense,
-        setIsResetExpense
+        isExpenseReset,
+        setIsExpenseReset,
+        isModal,
+        setIsModal,
+        transactionClicked,
+        transactionItemId
       }}
     >
       {children}

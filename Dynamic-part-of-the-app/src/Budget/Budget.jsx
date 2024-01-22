@@ -4,13 +4,12 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 export const LOCAL_STORAGE_KEY = "INFO_ARRAY";
 
-
 export function Budget() {
   const navigate = useNavigate();
   const { infoArray, setInfoArray } = useContext(MyContext);
   const setBudgetRef = useRef();
   const { budget, setBudget } = useContext(MyContext);
-
+  const {isbudgetReset, setIsBudgetReset} = useContext(MyContext);
   //Add To Budget Declarations
 
   const addBudgetLabelRef = useRef("");
@@ -19,9 +18,6 @@ export function Budget() {
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(infoArray));
   }, [infoArray]);
-
-  
- 
 
   // Set Budget Submit Function
 
@@ -85,26 +81,11 @@ export function Budget() {
   }
 
   //Budget Reset Function
-
-  function budgetReset() {
-    setInfoArray((currentInfoArray) => [
-      {
-        label: "Budget has been reset to 0",
-        type: "Budget Reset",
-        amount: budget,
-        category: "Budget Reset",
-        date: new Date().toISOString().split("T")[0],
-        id: crypto.randomUUID(),
-      },
-      ...currentInfoArray,
-    ]);
-    setBudget((currentBudget) => currentBudget = 0);
-    navigate("/");
-  }
+  
+  
 
   return (
     <>
-      {JSON.stringify(infoArray)}
       <form onSubmit={setBudgetSubmit}>
         <h2>Set Your Income / Budget</h2>
         <div>
@@ -129,7 +110,7 @@ export function Budget() {
 
       <div className="reset-budget">
         <h2>Reset budget</h2>
-        <button className="btn danger" onClick={budgetReset}>
+        <button className="btn danger" onClick={()=>setIsBudgetReset(true)}>
           Reset Budget
         </button>
       </div>

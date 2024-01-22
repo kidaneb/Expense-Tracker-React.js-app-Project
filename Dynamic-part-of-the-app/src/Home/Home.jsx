@@ -19,7 +19,7 @@ const [currentBalance, setCurrentBalance] = useState(0);
   
 
   //MODAL RELATED DECLARATION
-
+const {isModal, setIsModal} = useContext(MyContext);
   // BUDGET RELATED EFFECTS
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(infoArray));
@@ -49,7 +49,13 @@ useEffect(()=>{
 },[budget, expense])
 
 
+// Transaction function 
 
+// function transactionClicked(id){
+  
+//   setIsModal(true)
+// }
+const {transactionClicked } = useContext(MyContext);
 
   return (
     <>
@@ -72,9 +78,9 @@ useEffect(()=>{
           <ul>
             {infoArray.map((transaction) => {
               return (
-                <li key={transaction.id} >
+                <li className="transaction-list-item" key={transaction.id} onClick={()=>transactionClicked(transaction.id)}>
                   {transaction.label}{" "}
-                  {`${transaction.category === "Budget" ? "+" : "-"}$${
+                  {`${transaction.category === "Budget" || "Expense Reset" ? "+" : "-"}$${
                     transaction.amount
                   }`}
                 </li>

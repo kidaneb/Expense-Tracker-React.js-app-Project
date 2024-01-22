@@ -8,9 +8,8 @@ import { SharedContext } from "./Home/SharedContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-   
-
-    <RouterProvider router={router}/>
-    
+    <SharedContext>
+      <RouterProvider router={router} />
+    </SharedContext>
   </React.StrictMode>
 );

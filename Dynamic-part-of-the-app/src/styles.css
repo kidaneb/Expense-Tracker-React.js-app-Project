@@ -5,7 +5,6 @@ body {
   height: 90vh;
   width: 100vw;
   overflow: hidden;
-  z-index: 10;
 }
 .header {
   height: 10%;
@@ -82,9 +81,27 @@ body {
   /* background-color: yellow; */
   border: 1px solid black;
   border-left: none;
+  overflow: auto;
 }
 .transaction-history-title {
   font-size: 1.5rem;
+  text-align: center;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.transaction-list-item {
+  height: 30%;
+  width: 80%;
+  margin-bottom: 0.5em;
+  background-color: rgb(179, 172, 172);
+  list-style-type: none;
+  border-radius: 5px;
   text-align: center;
 }
 .pichart-display {
@@ -163,19 +180,59 @@ form {
 
 .modal {
   height: 50%;
-  width: 50%;
-  background-color: green;
+  width: 40%;
+  background-color: rgb(0, 115, 255);
+  border: 1px solid black;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 5;
+  border-radius: 1em;
   display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 15;
+}
+.modal-text {
+  height: 75%;
+  width: 100%;
+  margin: 1em;
+  color: white;
+  align-items: center;
+}
+.modal-text-title {
+  text-align: center;
+  font-size: 1.5rem;
+  text-decoration: underline;
+  margin-bottom: 0.5em;
+}
+.modal-text-key {
+  font-size: 1rem;
+  font-weight: bolder;
+}
+.modal-text-detail {
+  font-size: 1rem;
+}
+.modal-btn-container {
+  height: 20%;
+  width: 50%;
+  align-self: flex-end;
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 }
 .overlay {
   height: 100%;
   width: 100%;
   background-color: white;
   position: absolute;
-  opacity: 0.4;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
+  z-index: 10;
+  display: none;
 }

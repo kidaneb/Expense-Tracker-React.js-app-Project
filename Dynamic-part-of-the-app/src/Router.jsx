@@ -3,48 +3,27 @@ import { Home } from "./Home/Home";
 import { Expense } from "./Expense/Expense";
 import { Category } from "./Category/Category";
 import { Budget } from "./Budget/Budget";
-import { SharedContext } from "./Home/SharedContext";
 import { NavLayout } from "./NavLayout";
 
 export const router = createBrowserRouter([
   {
-    element: (
-      <SharedContext>
-        <NavLayout />
-      </SharedContext>
-    ),
+    element: <NavLayout />,
     children: [
       {
         path: "/",
-        element: (
-          <SharedContext>
-            <Home />
-          </SharedContext>
-        ),
+        element: <Home />,
       },
       {
         path: "/budget",
-        element: (
-          <SharedContext>
-            <Budget />
-          </SharedContext>
-        ),
+        element: <Budget />,
       },
       {
         path: "/expense",
-        element: (
-          <SharedContext>
-            <Expense />
-          </SharedContext>
-        ),
+        element: <Expense />,
       },
       {
         path: "/category",
-        element: (
-          <SharedContext>
-            <Category />
-          </SharedContext>
-        ),
+        element: <Category />,
       },
     ],
   },
