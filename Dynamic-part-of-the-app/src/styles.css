@@ -140,7 +140,7 @@ form {
   margin: 0.5em auto;
   /* border: 1px solid black;  */
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
 }
 .category {

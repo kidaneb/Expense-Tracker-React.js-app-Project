@@ -36,18 +36,7 @@ export function Category() {
           );
         })}
 
-        {/* <div className="category">
-          <div className="category-name">category-1</div>
-          <div className="category-spending">1234</div>
-        </div>
-        <div className="category">category-1</div>
-        <div className="category">category-1</div>
-        <div className="category">category-1</div>
-        <div className="category">category-1</div>
-        <div className="category">category-1</div>
-        <div className="category">category-1</div>
-        <div className="category">category-1</div>
-        <div className="category">catagory-1</div> */}
+        
       </div>
     </>
   );
