@@ -4,6 +4,7 @@ import { LOCAL_STORAGE_KEY } from "../Budget/Budget";
 import { MyContext } from "../SharedContext";
 
 export function Home() {
+
   //BUDGET RELATED DECLARATIONS
   const { infoArray, setInfoArray } = useContext(MyContext);
   const { spendingCategoryArray, setSpendingCategoryArray } =
@@ -14,7 +15,6 @@ export function Home() {
   // EXPENSE RELATED DECLARATIONS
   const expenseRef = useRef(0);
   const { expense, setExpense } = useContext(MyContext);
-
   //CURRENT BALANCE DECLARATION
 
   const [currentBalance, setCurrentBalance] = useState(0);
@@ -34,6 +34,18 @@ export function Home() {
   }, [budget]);
 
   // EXPENSE RELATED EFFECTS
+  useEffect(() => {
+    const currentExpense = infoArray.reduce((sum, item) => {
+      if (item.type === "Expense") {
+        sum += parseFloat(item.amount);
+      }
+      return sum; // Return the accumulator in each iteration
+    }, 0);
+    setExpense(parseFloat(currentExpense)); // Update the expense state
+  }, [infoArray, setExpense]);
+  
+  
+  
   useEffect(() => {
     localStorage.setItem(
       "spendingCategoryArray",

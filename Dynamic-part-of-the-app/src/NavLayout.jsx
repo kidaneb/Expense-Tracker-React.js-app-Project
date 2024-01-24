@@ -6,7 +6,7 @@ import { MyContext, SharedContext } from "./SharedContext.jsx";
 
 export function NavLayout() {
   const { infoArray, setInfoArray } = useContext(MyContext);
-  const {setSpendingCategoryArray} = useContext(MyContext);
+  const { setSpendingCategoryArray } = useContext(MyContext);
   const { budget, setBudget } = useContext(MyContext);
   const { expense, setExpense } = useContext(MyContext);
   const { isModal, setIsModal } = useContext(MyContext);
@@ -21,10 +21,13 @@ export function NavLayout() {
   const { transactionClicked, transactionItemId } = useContext(MyContext);
 
   function deleteTransactionItem() {
-    setInfoArray((currentInfoArray) => {
-      return currentInfoArray.filter((item) => item.id !== transactionItemId);
-    });
+    setInfoArray((currentInfoArray) =>
+      currentInfoArray.filter((item) => item.id !== transactionItemId)
+    );
+
     setIsModal(false);
+   
+
   }
 
   function budgetReset() {
@@ -179,12 +182,13 @@ export function NavLayout() {
 
       <div
         className="overlay"
-        style={isModal || isbudgetReset || isExpenseReset ? { display: "block" } : {}}
+        style={
+          isModal || isbudgetReset || isExpenseReset ? { display: "block" } : {}
+        }
         onClick={() => {
           setIsModal(false);
           setIsBudgetReset(false);
           setIsExpenseReset(false);
-
         }}
       ></div>
     </>

@@ -49,7 +49,7 @@ export function Expense() {
         parseFloat(currentExpense) +
         parseFloat(addExpenseAmountRef.current.value)
     );
-    setIsResetExpense(false);
+    setIsExpenseReset(false);
     navigate("/");
   }
 
