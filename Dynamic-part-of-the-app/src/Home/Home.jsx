@@ -4,17 +4,18 @@ import { LOCAL_STORAGE_KEY } from "../Budget/Budget";
 import { MyContext } from "../SharedContext";
 
 export function Home() {
-
   //BUDGET RELATED DECLARATIONS
   const { infoArray, setInfoArray } = useContext(MyContext);
   const { spendingCategoryArray, setSpendingCategoryArray } =
     useContext(MyContext);
+
   const budgetRef = useRef(0);
   const { budget, setBudget } = useContext(MyContext);
 
   // EXPENSE RELATED DECLARATIONS
   const expenseRef = useRef(0);
   const { expense, setExpense } = useContext(MyContext);
+
   //CURRENT BALANCE DECLARATION
 
   const [currentBalance, setCurrentBalance] = useState(0);
@@ -22,30 +23,41 @@ export function Home() {
   //MODAL RELATED DECLARATION
   const { isModal, setIsModal } = useContext(MyContext);
   // BUDGET RELATED EFFECTS
+
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(infoArray));
   }, [infoArray]);
+
   useEffect(() => {
     localStorage.setItem("currentBudget", budget);
   }, [budget, setBudget]);
 
-  useEffect(() => {
-    budgetRef.current.textContent = `$${budget}`;
-  }, [budget]);
-
-  // EXPENSE RELATED EFFECTS
-  useEffect(() => {
-    const currentExpense = infoArray.reduce((sum, item) => {
-      if (item.type === "Expense") {
+  // FOR UPDATING THE CURRENT BUDGET WHEN THE BUDGET TRANSACTION IS DELETED 
+  useEffect(()=>{
+    let currentBudget;
+    const budgetItem = infoArray.reduce((sum,item)=>{
+      if(item.type === "Budget"){
         sum += parseFloat(item.amount);
       }
-      return sum; // Return the accumulator in each iteration
-    }, 0);
-    setExpense(parseFloat(currentExpense)); // Update the expense state
-  }, [infoArray, setExpense]);
-  
-  
-  
+      return sum;
+    },0)
+    if(budgetItem){
+      currentBudget = parseFloat(budgetItem)
+    }
+    else{
+      currentBudget = 0;
+    }
+    
+    setBudget(currentBudget);
+  },[infoArray])
+
+  // TO SET THE BUDGET TO THE DISPLAY
+  useEffect(() => {
+    budgetRef.current.textContent = `$${budget}`;
+  }, [budget, budgetRef]);
+
+  // EXPENSE RELATED EFFECTS
+
   useEffect(() => {
     localStorage.setItem(
       "spendingCategoryArray",
@@ -61,15 +73,21 @@ export function Home() {
   // CURRENT BALANCE CALCULATION
 
   useEffect(() => {
+    // Calculate current expense directly within the useEffect
+    const newExpense = infoArray.reduce((sum, item) => {
+      if (item.type === "Expense" && !isNaN(parseFloat(item.amount))) {
+        sum += parseFloat(item.amount);
+      }
+      return sum;
+    }, 0);
+
+    setExpense(newExpense);
+  }, [infoArray]);
+
+  useEffect(() => {
     setCurrentBalance((cb) => budget - expense);
   }, [budget, expense]);
 
-  // Transaction function
-
-  // function transactionClicked(id){
-
-  //   setIsModal(true)
-  // }
   const { transactionClicked } = useContext(MyContext);
 
   return (

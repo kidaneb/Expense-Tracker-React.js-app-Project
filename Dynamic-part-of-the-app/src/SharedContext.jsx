@@ -17,10 +17,12 @@ export function SharedContext({ children }) {
     return storedArray || [];
   });
   //Budget
+
   const [budget, setBudget] = useState(() => {
     const storedBudget = JSON.parse(localStorage.getItem("currentBudget"));
     return storedBudget || 0;
   });
+
   // Reset Budget
   const [isbudgetReset, setIsBudgetReset] = useState(false);
 
@@ -29,6 +31,20 @@ export function SharedContext({ children }) {
     const storedExpense = JSON.parse(localStorage.getItem("currentExpense"));
     return storedExpense || 0;
   });
+
+  
+  // function currentExpense() {
+  //   const newExpense = infoArray.reduce((sum, item) => {
+  //     if (item.type === "Expense" && !isNaN(parseFloat(item.amount))) {
+  //       sum += parseFloat(item.amount);
+  //     }
+  //     return sum;
+  //   }, 0);
+  
+  //   setExpense((currentExpense) => parseFloat(newExpense));
+  // }
+  
+
   //Reset Expense
   const [isExpenseReset, setIsExpenseReset] = useState(false);
 
@@ -54,6 +70,7 @@ export function SharedContext({ children }) {
         setSpendingCategoryArray,
         expense,
         setExpense,
+       
         isExpenseReset,
         setIsExpenseReset,
         isModal,

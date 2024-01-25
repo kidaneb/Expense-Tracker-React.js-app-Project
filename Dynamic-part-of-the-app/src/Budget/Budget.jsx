@@ -7,7 +7,7 @@ export const LOCAL_STORAGE_KEY = "INFO_ARRAY";
 export function Budget() {
   const navigate = useNavigate();
   const { infoArray, setInfoArray } = useContext(MyContext);
-  const setBudgetRef = useRef();
+  const [budgetRef, setBudgetRef] = useState("");
   const { budget, setBudget } = useContext(MyContext);
   const { isbudgetReset, setIsBudgetReset } = useContext(MyContext);
   //Add To Budget Declarations
@@ -23,15 +23,15 @@ export function Budget() {
 
   function setBudgetSubmit(e) {
     e.preventDefault();
-    if (setBudgetRef.current.value === "") {
+    if (budgetRef === "") {
       alert("Please Enter SomeThing on the field");
       return;
     }
     setInfoArray((currentInfoArray) => [
       {
-        label: `Budget has been set to ${setBudgetRef.current.value}`,
+        label: `Budget has been set to ${budgetRef}`,
         type: "Budget",
-        amount: setBudgetRef.current.value,
+        amount: budgetRef,
         category: "Budget",
         date: new Date().toISOString().split("T")[0],
         id: crypto.randomUUID(),
@@ -39,7 +39,7 @@ export function Budget() {
       ...currentInfoArray,
     ]);
 
-    setBudget((currentBudget) => setBudgetRef.current.value);
+    setBudget((currentBudget) => budgetRef);
 
     navigate("/");
   }
@@ -76,7 +76,8 @@ export function Budget() {
     ]);
     const totalBudget =
       parseFloat(budget) + parseFloat(addBudgetRef.current.value);
-    setBudget((currentBudget) => (currentBudget = totalBudget));
+    setBudget((currentBudget) => totalBudget);
+
     navigate("/");
   }
 
@@ -88,7 +89,11 @@ export function Budget() {
         <h2>Set Your Income / Budget</h2>
         <div>
           <div>Enter your budget</div>
-          <input type="number" ref={setBudgetRef} />
+          <input
+            type="number"
+            value={budgetRef}
+            onChange={(e) => setBudgetRef(e.target.value)}
+          />
         </div>
         <button className="btn">Set Budget</button>
       </form>

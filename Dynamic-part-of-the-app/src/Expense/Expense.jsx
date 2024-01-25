@@ -7,9 +7,9 @@ export function Expense() {
   const { spendingCategoryArray, setSpendingCategoryArray } =
     useContext(MyContext);
   const { expense, setExpense } = useContext(MyContext);
-  const addExpenseLableRef = useRef("");
-  const addExpenseAmountRef = useRef(0);
-  const addExpenseCategoryRef = useRef("Uncategorized");
+  const addExpenseLableRef = useRef(null);
+  const addExpenseAmountRef = useRef(null);
+  const addExpenseCategoryRef = useRef(null);
   const { isExpenseReset, setIsExpenseReset } = useContext(MyContext);
   const navigate = useNavigate();
 

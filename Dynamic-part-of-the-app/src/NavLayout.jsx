@@ -24,10 +24,11 @@ export function NavLayout() {
     setInfoArray((currentInfoArray) =>
       currentInfoArray.filter((item) => item.id !== transactionItemId)
     );
-
+    
+    
+    // Add setIsModal and navigate if needed
     setIsModal(false);
-   
-
+    navigate("/");
   }
 
   function budgetReset() {
