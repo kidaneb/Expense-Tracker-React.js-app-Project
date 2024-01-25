@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 
 import { LOCAL_STORAGE_KEY } from "../Budget/Budget";
 import { MyContext } from "../SharedContext";
+import { ExpenseTrackerChart } from "../ExpenseTrackerChart";
 
 export function Home() {
   //BUDGET RELATED DECLARATIONS
@@ -32,24 +33,23 @@ export function Home() {
     localStorage.setItem("currentBudget", budget);
   }, [budget, setBudget]);
 
-  // FOR UPDATING THE CURRENT BUDGET WHEN THE BUDGET TRANSACTION IS DELETED 
-  useEffect(()=>{
+  // FOR UPDATING THE CURRENT BUDGET WHEN THE BUDGET TRANSACTION IS DELETED
+  useEffect(() => {
     let currentBudget;
-    const budgetItem = infoArray.reduce((sum,item)=>{
-      if(item.type === "Budget"){
+    const budgetItem = infoArray.reduce((sum, item) => {
+      if (item.type === "Budget") {
         sum += parseFloat(item.amount);
       }
       return sum;
-    },0)
-    if(budgetItem){
-      currentBudget = parseFloat(budgetItem)
-    }
-    else{
+    }, 0);
+    if (budgetItem) {
+      currentBudget = parseFloat(budgetItem);
+    } else {
       currentBudget = 0;
     }
-    
+
     setBudget(currentBudget);
-  },[infoArray])
+  }, [infoArray]);
 
   // TO SET THE BUDGET TO THE DISPLAY
   useEffect(() => {
@@ -89,7 +89,14 @@ export function Home() {
   }, [budget, expense]);
 
   const { transactionClicked } = useContext(MyContext);
-
+  // DATA DECLARATION USED FOR THE PIE CHART
+  const data = [
+    { id: 0, value: expense, label: "Total Expense", color: "red" },
+    { id: 1, value: currentBalance, label: "Remaining Budget", color: "blue" },
+  ];
+  let valueSum = data.reduce((sum, item) => {
+    sum += parseFloat(item.value);
+  }, 0);
   return (
     <>
       <div className="current-balance">
@@ -130,7 +137,8 @@ export function Home() {
         </div>
 
         <div className="pichart-display">
-          <h1>Pi-Chart</h1>
+          
+          {valueSum !== 0 && <ExpenseTrackerChart data={data} />}
         </div>
       </div>
     </>
