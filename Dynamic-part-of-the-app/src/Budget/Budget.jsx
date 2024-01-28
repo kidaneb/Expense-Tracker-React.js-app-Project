@@ -7,43 +7,52 @@ export const LOCAL_STORAGE_KEY = "INFO_ARRAY";
 export function Budget() {
   const navigate = useNavigate();
   const { infoArray, setInfoArray } = useContext(MyContext);
-  const [budgetRef, setBudgetRef] = useState("");
-  const { budget, setBudget } = useContext(MyContext);
+  const { setBudgetItemsArray } = useContext(MyContext);
+  const budgetRef = useRef("");
+
   const { isbudgetReset, setIsBudgetReset } = useContext(MyContext);
   //Add To Budget Declarations
-
   const addBudgetLabelRef = useRef("");
   const addBudgetRef = useRef(0);
-
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(infoArray));
-  }, [infoArray]);
+  //
 
   // Set Budget Submit Function
 
   function setBudgetSubmit(e) {
     e.preventDefault();
-    if (budgetRef === "") {
+    if (budgetRef.current.value === "") {
       alert("Please Enter SomeThing on the field");
       return;
     }
+
+    const newId = crypto.randomUUID();
     setInfoArray((currentInfoArray) => [
       {
-        label: `Budget has been set to ${budgetRef}`,
+        label: `Budget has been set to ${budgetRef.current.value}`,
         type: "Budget",
-        amount: budgetRef,
+        amount: budgetRef.current.value,
         category: "Budget",
         date: new Date().toISOString().split("T")[0],
-        id: crypto.randomUUID(),
+        id: newId,
       },
       ...currentInfoArray,
     ]);
 
-    setBudget((currentBudget) => budgetRef);
+    setBudgetItemsArray((currentArray) => [
+      {
+        label: addBudgetLabelRef.current.value,
+        type: "Budget",
+        amount: budgetRef.current.value,
+        category: "Budget",
+        date: new Date().toISOString().split("T")[0],
+        id: newId,
+      },
+      ...currentArray,
+    ]);
 
     navigate("/");
   }
-
+  //
   // Add To Budget Submit Function
 
   function addToBudgetSubmit(e) {
@@ -63,25 +72,37 @@ export function Budget() {
       alert("Please Enter the Amount");
       return;
     }
+
+    const newId = crypto.randomUUID();
+
     setInfoArray((currentInfoArray) => [
       {
         label: addBudgetLabelRef.current.value,
-        type: "Budget",
+        type: "Added Budget",
         amount: addBudgetRef.current.value,
         category: "Budget",
         date: new Date().toISOString().split("T")[0],
-        id: crypto.randomUUID(),
+        id: newId,
       },
       ...currentInfoArray,
     ]);
-    const totalBudget =
-      parseFloat(budget) + parseFloat(addBudgetRef.current.value);
-    setBudget((currentBudget) => totalBudget);
+
+    setBudgetItemsArray((currentArray) => [
+      {
+        label: addBudgetLabelRef.current.value,
+        type: "Added Budget",
+        amount: addBudgetRef.current.value,
+        category: "Budget",
+        date: new Date().toISOString().split("T")[0],
+        id: newId,
+      },
+      ...currentArray,
+    ]);
 
     navigate("/");
   }
 
-  //Budget Reset Function
+  
 
   return (
     <>
@@ -89,11 +110,7 @@ export function Budget() {
         <h2>Set Your Income / Budget</h2>
         <div>
           <div>Enter your budget</div>
-          <input
-            type="number"
-            value={budgetRef}
-            onChange={(e) => setBudgetRef(e.target.value)}
-          />
+          <input type="number" ref={budgetRef} />
         </div>
         <button className="btn">Set Budget</button>
       </form>

@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 export function Expense() {
   const { infoArray, setInfoArray } = useContext(MyContext);
+  const {expenseItemsArray, setExpenseItemsArray} = useContext(MyContext);
   const { spendingCategoryArray, setSpendingCategoryArray } =
     useContext(MyContext);
   const { expense, setExpense } = useContext(MyContext);
   const addExpenseLableRef = useRef(null);
-  const addExpenseAmountRef = useRef(null);
+  const [addExpense, setAddExpense] = useState("");
   const addExpenseCategoryRef = useRef(null);
   const { isExpenseReset, setIsExpenseReset } = useContext(MyContext);
   const navigate = useNavigate();
@@ -17,19 +18,19 @@ export function Expense() {
     e.preventDefault();
     if (
       addExpenseLableRef.current.value === "" ||
-      addExpenseAmountRef.current.value === ""
+      addExpense === ""
     ) {
       return;
     }
-
+    const newId = crypto.randomUUID();
     setInfoArray((currentInfoArray) => [
       {
         label: addExpenseLableRef.current.value,
         type: "Expense",
-        amount: addExpenseAmountRef.current.value,
+        amount: addExpense,
         category: addExpenseCategoryRef.current.value,
         date: new Date().toISOString().split("T")[0],
-        id: crypto.randomUUID(),
+        id: newId,
       },
       ...currentInfoArray,
     ]);
@@ -37,18 +38,26 @@ export function Expense() {
       {
         label: addExpenseLableRef.current.value,
         type: "Expense",
-        amount: addExpenseAmountRef.current.value,
+        amount: addExpense,
         category: addExpenseCategoryRef.current.value,
         date: new Date().toISOString().split("T")[0],
-        id: crypto.randomUUID(),
+        id: newId,
       },
       ...currentArray,
     ]);
-    setExpense(
-      (currentExpense) =>
-        parseFloat(currentExpense) +
-        parseFloat(addExpenseAmountRef.current.value)
-    );
+
+    setExpenseItemsArray((currentArray) => [
+      {
+        label: addExpenseLableRef.current.value,
+        type: "Expense",
+        amount: addExpense,
+        category: addExpenseCategoryRef.current.value,
+        date: new Date().toISOString().split("T")[0],
+        id: newId,
+      },
+      ...currentArray,
+    ]);
+    
     setIsExpenseReset(false);
     navigate("/");
   }
@@ -66,7 +75,7 @@ export function Expense() {
 
           <div className="expense-amount">
             <div>Amount</div>
-            <input type="number" ref={addExpenseAmountRef} />
+            <input type="number" value={addExpense} onChange={e=>setAddExpense(e.target.value)} />
           </div>
 
           <div className="expense-category">

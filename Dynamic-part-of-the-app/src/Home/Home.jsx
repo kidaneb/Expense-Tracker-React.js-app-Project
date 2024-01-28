@@ -6,14 +6,18 @@ import { ExpenseTrackerChart } from "../ExpenseTrackerChart";
 
 export function Home() {
   //BUDGET RELATED DECLARATIONS
+
   const { infoArray, setInfoArray } = useContext(MyContext);
   const { spendingCategoryArray, setSpendingCategoryArray } =
     useContext(MyContext);
+
+  const { budgetItemsArray, setBudgetItemsArray } = useContext(MyContext);
 
   const budgetRef = useRef(0);
   const { budget, setBudget } = useContext(MyContext);
 
   // EXPENSE RELATED DECLARATIONS
+  const { expenseItemsArray, setExpenseItemsArray } = useContext(MyContext);
   const expenseRef = useRef(0);
   const { expense, setExpense } = useContext(MyContext);
 
@@ -23,33 +27,60 @@ export function Home() {
 
   //MODAL RELATED DECLARATION
   const { isModal, setIsModal } = useContext(MyContext);
+
   // BUDGET RELATED EFFECTS
 
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(infoArray));
   }, [infoArray]);
 
+  //
+  // SETTING THE BUDGET ITEMS ARRAY TO THE LOCAL STORAGE
   useEffect(() => {
-    localStorage.setItem("currentBudget", budget);
-  }, [budget, setBudget]);
+    localStorage.setItem("BudgetItemsArray", JSON.stringify(budgetItemsArray));
+  }, [budgetItemsArray]);
+  //
 
-  // FOR UPDATING THE CURRENT BUDGET WHEN THE BUDGET TRANSACTION IS DELETED
+  // SETTING THE CURRENT BUDGET
+
   useEffect(() => {
-    let currentBudget;
-    const budgetItem = infoArray.reduce((sum, item) => {
-      if (item.type === "Budget") {
-        sum += parseFloat(item.amount);
+    let currentBudget = 0;
+    let addedBudget = 0;
+    for (const item of budgetItemsArray) {
+      if (item.type === "Added Budget") {
+        addedBudget += parseFloat(item.amount);
+      } else if (item.type === "Budget") {
+        currentBudget = addedBudget + parseFloat(item.amount);
+        break;
       }
-      return sum;
-    }, 0);
-    if (budgetItem) {
-      currentBudget = parseFloat(budgetItem);
-    } else {
-      currentBudget = 0;
     }
+    setBudget((cb) => currentBudget);
+  }, [budgetItemsArray]);
 
-    setBudget(currentBudget);
-  }, [infoArray]);
+  // SET THE EXPENSE ITEMS ARRAY TO THE LOCAL STORAGE
+  useEffect(() => {
+    localStorage.setItem(
+      "ExpenseItemsArray",
+      JSON.stringify(expenseItemsArray)
+    );
+  }, [expenseItemsArray, setExpenseItemsArray]);
+
+  // CALCULATING THE CURRENT EXPENSE
+
+  useEffect(() => {
+    if (expenseItemsArray.length !== 0) {
+      const currentExpense = expenseItemsArray.reduce((sum, item) => {
+        return sum + parseFloat(item.amount);
+      }, 0);
+      setExpense((ce) => parseFloat(currentExpense));
+    } else {
+      setExpense((ce) => parseFloat(0));
+    }
+  }, [expenseItemsArray]);
+
+  // CALCULATING THE CURRENT BUDGET
+
+  useEffect(() => {}, [budgetItemsArray, setBudget]); // Remove setBudgetItemsArray from the dependency array
 
   // TO SET THE BUDGET TO THE DISPLAY
   useEffect(() => {
@@ -67,41 +98,36 @@ export function Home() {
   useEffect(() => {
     expenseRef.current.textContent = "$" + expense;
   });
-  useEffect(() => {
-    localStorage.setItem("currentExpense", expense);
-  }, [expense]);
+
   // CURRENT BALANCE CALCULATION
-
-  useEffect(() => {
-    // Calculate current expense directly within the useEffect
-    const newExpense = infoArray.reduce((sum, item) => {
-      if (item.type === "Expense" && !isNaN(parseFloat(item.amount))) {
-        sum += parseFloat(item.amount);
-      }
-      return sum;
-    }, 0);
-
-    setExpense(newExpense);
-  }, [infoArray]);
 
   useEffect(() => {
     setCurrentBalance((cb) => budget - expense);
   }, [budget, expense]);
 
   const { transactionClicked } = useContext(MyContext);
-  // DATA DECLARATION USED FOR THE PIE CHART
+  // DATA DECLARATION AND SOME LOGIC USED FOR THE PIE CHART
   const data = [
-    { id: 0, value: expense, label: "Total Expense", color: "red" },
-    { id: 1, value: currentBalance, label: "Remaining Budget", color: "blue" },
+    { id: 0, value: parseFloat(expense), label: "Total Expense", color: "red" },
+    {
+      id: 1,
+      value: parseFloat(currentBalance),
+      label: "Remaining Budget",
+      color: "blue",
+    },
   ];
-  let valueSum = data.reduce((sum, item) => {
-    sum += parseFloat(item.value);
-  }, 0);
+  let valueSum;
+  useEffect(() => {
+    valueSum = data.reduce((sum, item) => {
+      return sum + parseFloat(item.value);
+    }, 0);
+  }, [data]);
   return (
     <>
       <div className="current-balance">
         Your Current Balance is ${currentBalance}
       </div>
+
       <div className="budget-expense-display">
         <div className="budget-display">
           <div className="budget-title">Budget/Income</div>
@@ -113,6 +139,7 @@ export function Home() {
           <div className="expense-value" ref={expenseRef}></div>
         </div>
       </div>
+
       <div className="transaction-history-container">
         <div className="transaction-history">
           <div className="transaction-history-title">Transaction History</div>
@@ -137,7 +164,6 @@ export function Home() {
         </div>
 
         <div className="pichart-display">
-          
           {valueSum !== 0 && <ExpenseTrackerChart data={data} />}
         </div>
       </div>

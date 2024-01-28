@@ -7,11 +7,16 @@ import { MyContext, SharedContext } from "./SharedContext.jsx";
 export function NavLayout() {
   const { infoArray, setInfoArray } = useContext(MyContext);
   const { setSpendingCategoryArray } = useContext(MyContext);
+  const {budgetItemsArray, setBudgetItemsArray} = useContext(MyContext)
+  const { expenseItemsArray, setExpenseItemsArray } = useContext(MyContext);
   const { budget, setBudget } = useContext(MyContext);
   const { expense, setExpense } = useContext(MyContext);
   const { isModal, setIsModal } = useContext(MyContext);
   const { isbudgetReset, setIsBudgetReset } = useContext(MyContext);
   const { isExpenseReset, setIsExpenseReset } = useContext(MyContext);
+  const {undoExpeseArray, setUndoExpenseArray} = useContext(MyContext);
+  const {undoBudgetArray, setUndoBudgetArray} = useContext(MyContext);
+
   const navigate = useNavigate();
 
   const modalStyle = {
@@ -21,11 +26,30 @@ export function NavLayout() {
   const { transactionClicked, transactionItemId } = useContext(MyContext);
 
   function deleteTransactionItem() {
-    setInfoArray((currentInfoArray) =>
-      currentInfoArray.filter((item) => item.id !== transactionItemId)
-    );
+    setInfoArray((currentArray) => {
+      return currentArray.filter((item) => {
+        if(item.id === transactionItemId){
+          if(item.category === "Expense Reset"){
+            setExpenseItemsArray((currentArray)=> undoExpeseArray)
+          }
+          if(item.category === "Budget Reset"){
+            setBudgetItemsArray((currentArray)=> undoBudgetArray)
+          }
+          return false;
+        }
+        else{
+          return true;
+        }
+      });
+    });
     
-    
+    setBudgetItemsArray((currentArray) => {
+      return currentArray.filter((item) => item.id !== transactionItemId);
+    });
+
+    setExpenseItemsArray((currentArray) => {
+      return currentArray.filter((item) => item.id !== transactionItemId);
+    });
     // Add setIsModal and navigate if needed
     setIsModal(false);
     navigate("/");
@@ -43,7 +67,8 @@ export function NavLayout() {
       },
       ...currentInfoArray,
     ]);
-    setBudget((currentBudget) => (currentBudget = 0));
+    setUndoBudgetArray((currentArray)=> budgetItemsArray)
+    setBudgetItemsArray((currentArray)=>[])
     setIsBudgetReset(false);
     navigate("/");
   }
@@ -60,10 +85,9 @@ export function NavLayout() {
       },
       ...currentInfoArray,
     ]);
-    setExpense((ce) => (ce = 0));
-
+    setUndoExpenseArray((currentArray) => expenseItemsArray);
     setIsExpenseReset(false);
-
+    setExpenseItemsArray((currentArray) => []);
     setSpendingCategoryArray((currentArray) => []);
     navigate("/");
   }

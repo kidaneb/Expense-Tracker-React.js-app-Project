@@ -18,21 +18,24 @@ export function SharedContext({ children }) {
   });
   //Budget
 
-  const [budget, setBudget] = useState(() => {
-    const storedBudget = JSON.parse(localStorage.getItem("currentBudget"));
-    return storedBudget || 0;
-  });
+  const [budget, setBudget] = useState(0);
+
+  const [budgetItemsArray, setBudgetItemsArray] = useState(()=>{
+    const storedArray = JSON.parse(localStorage.getItem("BudgetItemsArray"));
+    return storedArray || [];
+  })
 
   // Reset Budget
   const [isbudgetReset, setIsBudgetReset] = useState(false);
-
+const [undoBudgetArray, setUndoBudgetArray] = useState([]);
   // Expense
-  const [expense, setExpense] = useState(() => {
-    const storedExpense = JSON.parse(localStorage.getItem("currentExpense"));
-    return storedExpense || 0;
+  const [expenseItemsArray, setExpenseItemsArray] = useState(() => {
+    const storedArray = JSON.parse(localStorage.getItem("ExpenseItemsArray"));
+    return storedArray || [];
   });
 
-  
+  const [expense, setExpense] = useState(0);
+
   // function currentExpense() {
   //   const newExpense = infoArray.reduce((sum, item) => {
   //     if (item.type === "Expense" && !isNaN(parseFloat(item.amount))) {
@@ -40,14 +43,14 @@ export function SharedContext({ children }) {
   //     }
   //     return sum;
   //   }, 0);
-  
+
   //   setExpense((currentExpense) => parseFloat(newExpense));
   // }
-  
 
   //Reset Expense
-  const [isExpenseReset, setIsExpenseReset] = useState(false);
 
+  const [isExpenseReset, setIsExpenseReset] = useState(false);
+  const [undoExpeseArray, setUndoExpenseArray] = useState([]);
   //  Modal
   const [isModal, setIsModal] = useState(false);
   const [transactionItemId, setTransactionItemId] = useState(0);
@@ -66,17 +69,24 @@ export function SharedContext({ children }) {
         setIsBudgetReset,
         infoArray,
         setInfoArray,
+        budgetItemsArray,
+        setBudgetItemsArray,
         spendingCategoryArray,
         setSpendingCategoryArray,
         expense,
         setExpense,
-       
         isExpenseReset,
         setIsExpenseReset,
         isModal,
         setIsModal,
         transactionClicked,
         transactionItemId,
+        expenseItemsArray,
+        setExpenseItemsArray,
+        undoExpeseArray,
+        setUndoExpenseArray,
+        undoBudgetArray,
+        setUndoBudgetArray
       }}
     >
       {children}
