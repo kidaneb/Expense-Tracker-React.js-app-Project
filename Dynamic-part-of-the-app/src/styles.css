@@ -281,15 +281,17 @@ form {
     font-size: 1.5rem;
   }
   .transaction-history-container {
-    height: 70%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   .transaction-history {
+    height: 150%;
     width: 90%;
     /* background-color: yellow; */
     border: 1px solid black;
+    margin: 5px;
     overflow: auto;
   }
   .pichart-display {

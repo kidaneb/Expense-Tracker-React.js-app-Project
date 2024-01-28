@@ -130,7 +130,7 @@ export function Home() {
 
       <div className="budget-expense-display">
         <div className="budget-display">
-          <div className="budget-title">Budget/Income</div>
+          <div className="budget-title">Budget</div>
           <div className="budget-value" ref={budgetRef}></div>
         </div>
 
