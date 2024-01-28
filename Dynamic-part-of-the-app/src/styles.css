@@ -16,13 +16,11 @@ body {
 }
 .detail-container {
   height: 90%;
-  width: inherit;
   display: flex;
 }
 .navbar {
   width: 25%;
   border-right: 1px solid black;
-  
 }
 .transaction-container {
   width: 75%;
@@ -30,12 +28,13 @@ body {
 }
 .current-balance {
   height: 10%;
-  /* background-color: red; */
+  background-color: red;
   font-size: 2rem;
 }
 .budget-expense-display {
   height: 40%;
   display: flex;
+  background-color: lightcyan;
   justify-content: space-around;
   align-items: center;
 }
@@ -240,4 +239,41 @@ form {
   opacity: 0.5;
   z-index: 10;
   display: none;
+}
+
+@media (max-width: 768px) {
+  .header {
+    height: 7%;
+  }
+  .navbar {
+    display: none;
+  }
+  .transaction-container {
+    width: 100%;
+  }
+  .current-balance {
+    height: 7%;
+    display: flex;
+    align-items: center;
+  }
+  .budget-expense-display {
+    height: 30%;
+  }
+  .transaction-history-container {
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .transaction-history {
+    width: 90%;
+    /* background-color: yellow; */
+    border: 1px solid black;
+    overflow: auto;
+  }
+  .pichart-display {
+    width: 90%;
+    border: 1px solid black;  
+    /* background-color: red; */
+  }
 }
