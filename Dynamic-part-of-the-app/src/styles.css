@@ -30,6 +30,8 @@ body {
   height: 10%;
   background-color: red;
   font-size: 2rem;
+  display: flex;
+  align-items: center;
 }
 .budget-expense-display {
   height: 40%;
@@ -254,10 +256,29 @@ form {
   .current-balance {
     height: 7%;
     display: flex;
+    font-size: 1.5rem;
     align-items: center;
   }
   .budget-expense-display {
     height: 30%;
+  }
+  .budget-display {
+    overflow-x: auto;
+  }
+  .budget-title {
+    font-size: 1.5rem;
+  }
+  .budget-value {
+    font-size: 1.5rem;
+  }
+  .expense-display {
+    overflow-x: auto;
+  }
+  .expense-title {
+    font-size: 1.5rem;
+  }
+  .expense-value {
+    font-size: 1.5rem;
   }
   .transaction-history-container {
     height: 70%;
@@ -273,7 +294,7 @@ form {
   }
   .pichart-display {
     width: 90%;
-    border: 1px solid black;  
+    border: 1px solid black;
     /* background-color: red; */
   }
 }
