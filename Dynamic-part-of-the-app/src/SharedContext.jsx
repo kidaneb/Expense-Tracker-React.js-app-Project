@@ -1,14 +1,13 @@
 import { createContext, useEffect, useState } from "react";
-import { LOCAL_STORAGE_KEY } from "./Budget/Budget";
 
 export const MyContext = createContext();
 
 export function SharedContext({ children }) {
   //Main Array
-  const [infoArray, setInfoArray] = useState(() => {
-    const storedArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    return storedArray || [];
-  });
+  // const [infoArray, setInfoArray] = useState(() => {
+  //   const storedArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+  //   return storedArray || [];
+  // });
   // Spending Category Array
   const [spendingCategoryArray, setSpendingCategoryArray] = useState(() => {
     const storedArray = JSON.parse(
@@ -49,44 +48,52 @@ const [undoBudgetArray, setUndoBudgetArray] = useState([]);
 
   //Reset Expense
 
-  const [isExpenseReset, setIsExpenseReset] = useState(false);
-  const [undoExpeseArray, setUndoExpenseArray] = useState([]);
+  
   //  Modal
   const [isModal, setIsModal] = useState(false);
   const [transactionItemId, setTransactionItemId] = useState(0);
-  let Id;
-  function transactionClicked(id) {
-    setIsModal(true);
-    setTransactionItemId(id);
-  }
+  
 
   return (
     <MyContext.Provider
       value={{
-        budget,
-        setBudget,
-        isbudgetReset,
-        setIsBudgetReset,
-        infoArray,
-        setInfoArray,
-        budgetItemsArray,
-        setBudgetItemsArray,
-        spendingCategoryArray,
-        setSpendingCategoryArray,
-        expense,
-        setExpense,
-        isExpenseReset,
-        setIsExpenseReset,
-        isModal,
-        setIsModal,
-        transactionClicked,
-        transactionItemId,
-        expenseItemsArray,
-        setExpenseItemsArray,
-        undoExpeseArray,
-        setUndoExpenseArray,
-        undoBudgetArray,
-        setUndoBudgetArray
+        // budget,
+        // setBudget,
+        
+        // isbudgetReset,
+        // setIsBudgetReset,
+        
+        // isExpenseReset,
+        // setIsExpenseReset,
+
+        // infoArray,
+        // setInfoArray,
+        
+        // budgetItemsArray,
+        // setBudgetItemsArray,
+        
+        // spendingCategoryArray,
+        // setSpendingCategoryArray,
+        
+        // expense,
+        // setExpense,
+        
+        
+        
+        // isModal,
+        // setIsModal,
+        
+        
+        // transactionItemId,
+        // setTransactionItemId,
+        // expenseItemsArray,
+        // setExpenseItemsArray,
+        
+        // undoExpeseArray,
+        // setUndoExpenseArray,
+        
+        // undoBudgetArray,
+        // setUndoBudgetArray
       }}
     >
       {children}

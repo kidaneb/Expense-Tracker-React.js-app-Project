@@ -5,12 +5,13 @@ import "./styles.css";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./Router.jsx";
 import { SharedContext } from "./SharedContext.jsx";
-
+import { Provider } from "react-redux";
+import store from "./Store/store.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <SharedContext>
+  <Provider store={store}>
+    {/* <SharedContext> */}
       <RouterProvider router={router} />
-    </SharedContext>
-  </React.StrictMode>
+    {/* </SharedContext> */}
+  </Provider>
 );

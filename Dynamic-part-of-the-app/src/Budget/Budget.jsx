@@ -1,16 +1,21 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { MyContext } from "../SharedContext";
 import { Navigate, useNavigate } from "react-router-dom";
-
-export const LOCAL_STORAGE_KEY = "INFO_ARRAY";
+import { useDispatch, useSelector } from "react-redux";
+import { addToInfoArray } from "../Features/InfoArray";
+import { addToBudgetArray } from "../Features/budgetItemsArray";
+import { budgetReset } from "../Features/isBudgetReset";
 
 export function Budget() {
   const navigate = useNavigate();
-  const { infoArray, setInfoArray } = useContext(MyContext);
-  const { setBudgetItemsArray } = useContext(MyContext);
+  const budgetItemsArray = useSelector((state) => state.budgetArray.value);
   const budgetRef = useRef("");
 
-  const { isbudgetReset, setIsBudgetReset } = useContext(MyContext);
+  const infoArray = useSelector((state) => state.infoArray.value);
+  const dispatch = useDispatch();
+
+  // const { isbudgetReset, setIsBudgetReset } = useContext(MyContext);
+  const isbudgetReset = useSelector((state) => state.isBudgetReset.value);
   //Add To Budget Declarations
   const addBudgetLabelRef = useRef("");
   const addBudgetRef = useRef(0);
@@ -26,30 +31,27 @@ export function Budget() {
     }
 
     const newId = crypto.randomUUID();
-    setInfoArray((currentInfoArray) => [
-      {
+
+    dispatch(
+      addToInfoArray({
         label: `Budget has been set to ${budgetRef.current.value}`,
         type: "Budget",
         amount: budgetRef.current.value,
         category: "Budget",
         date: new Date().toISOString().split("T")[0],
         id: newId,
-      },
-      ...currentInfoArray,
-    ]);
-
-    setBudgetItemsArray((currentArray) => [
-      {
+      })
+    );
+    dispatch(
+      addToBudgetArray({
         label: addBudgetLabelRef.current.value,
         type: "Budget",
         amount: budgetRef.current.value,
         category: "Budget",
         date: new Date().toISOString().split("T")[0],
         id: newId,
-      },
-      ...currentArray,
-    ]);
-
+      })
+    );
     navigate("/");
   }
   //
@@ -75,34 +77,30 @@ export function Budget() {
 
     const newId = crypto.randomUUID();
 
-    setInfoArray((currentInfoArray) => [
-      {
+    dispatch(
+      addToInfoArray({
         label: addBudgetLabelRef.current.value,
         type: "Added Budget",
         amount: addBudgetRef.current.value,
         category: "Budget",
         date: new Date().toISOString().split("T")[0],
         id: newId,
-      },
-      ...currentInfoArray,
-    ]);
+      })
+    );
 
-    setBudgetItemsArray((currentArray) => [
-      {
+    dispatch(
+      addToBudgetArray({
         label: addBudgetLabelRef.current.value,
         type: "Added Budget",
         amount: addBudgetRef.current.value,
         category: "Budget",
         date: new Date().toISOString().split("T")[0],
         id: newId,
-      },
-      ...currentArray,
-    ]);
+      })
+    );
 
     navigate("/");
   }
-
-  
 
   return (
     <>
@@ -130,7 +128,7 @@ export function Budget() {
 
       <div className="reset-budget">
         <h2>Reset budget</h2>
-        <button className="btn danger" onClick={() => setIsBudgetReset(true)}>
+        <button className="btn danger" onClick={() => dispatch(budgetReset())}>
           Reset Budget
         </button>
       </div>

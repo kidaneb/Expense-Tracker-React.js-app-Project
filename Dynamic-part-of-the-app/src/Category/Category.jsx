@@ -1,15 +1,17 @@
 import { useContext, useState } from "react";
 import { MyContext } from "../SharedContext";
+import { useSelector } from "react-redux";
 
 export function Category() {
-  const { infoArray, setInfoArray } = useContext(MyContext);
-  const { spendingCategoryArray, isSpendingCategoryArray } =
-    useContext(MyContext);
-  const { budget, setBudget } = useContext(MyContext);
+  const infoArray = useSelector((state) => state.infoArray.value);
+  const spendingCategoryArray = useSelector(
+    (state) => state.spendingArray.value
+  );
+  const budget = useSelector((state) => state.budget.value);
 
-  const { isResetExpense, setIsResetExpense } = useContext(MyContext);
+  const isexpenseReset = useSelector((state) => state.isExpenseReset.value);
 
-  let categoryArray = isResetExpense
+  let categoryArray = isexpenseReset
     ? []
     : [
         ...new Set(spendingCategoryArray.map((item) => item.category)),

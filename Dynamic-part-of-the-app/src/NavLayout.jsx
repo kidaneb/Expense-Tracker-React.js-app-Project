@@ -3,92 +3,120 @@ import { Header } from "./Header";
 import { NavBar } from "./NavBar";
 import { useContext } from "react";
 import { MyContext, SharedContext } from "./SharedContext.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  filterBudgetArray,
+  resetBudgetArray,
+  setToBudgetArray,
+} from "./Features/budgetItemsArray.js";
 
+import { resetSpendingArray } from "./Features/spendingCategoryArray.js";
+import { addToUndoBudgetArray } from "./Features/undoBudgetArray.js";
+import { addToUndoExpenseArray } from "./Features/undoExpenseArray.js";
+import { addToInfoArray } from "./Features/InfoArray.js";
+import * as actionCreator from "./Features/actions.js";
+import {
+  filterExpenseArray,
+  resetExpenseArray,
+  setToExpenseArray,
+} from "./Features/expenseItemsArray.js";
+import { budgetNotReset } from "./Features/isBudgetReset.js";
+import { expenseNotReset } from "./Features/isExpenseReset.js";
+import { modalNotSet } from "./Features/modal.js";
 export function NavLayout() {
-  const { infoArray, setInfoArray } = useContext(MyContext);
-  const { setSpendingCategoryArray } = useContext(MyContext);
-  const {budgetItemsArray, setBudgetItemsArray} = useContext(MyContext)
-  const { expenseItemsArray, setExpenseItemsArray } = useContext(MyContext);
-  const { budget, setBudget } = useContext(MyContext);
-  const { expense, setExpense } = useContext(MyContext);
-  const { isModal, setIsModal } = useContext(MyContext);
-  const { isbudgetReset, setIsBudgetReset } = useContext(MyContext);
-  const { isExpenseReset, setIsExpenseReset } = useContext(MyContext);
-  const {undoExpeseArray, setUndoExpenseArray} = useContext(MyContext);
-  const {undoBudgetArray, setUndoBudgetArray} = useContext(MyContext);
+  const infoArray = useSelector((state) => state.infoArray.value);
+  const budgetItemsArray = useSelector((state) => state.budgetArray.value);
+  const expenseItemsArray = useSelector((state) => state.expenseArray.value);
+  const spendingCategoryArray = useSelector(
+    (state) => state.spendingArray.value
+  );
 
+  const budget = useSelector((state) => state.budget.value);
+  const expense = useSelector((state) => state.expense.value);
+
+  const isexpenseReset = useSelector((state) => state.isExpenseReset.value);
+  const isbudgetReset = useSelector((state) => state.isBudgetReset.value);
+
+  const undoBudgetArray = useSelector((state) => state.undoBudgetArray.value);
+  const undoExpenseArray = useSelector((state) => state.undoExpenseArray.value);
+
+  const isModal = useSelector((state) => state.isModal.value);
+
+  const transactionItemId = useSelector(
+    (state) => state.transactionItemId.value
+  );
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const modalStyle = {
     zIndex: 5,
     opacity: 0.3,
   };
-  const { transactionClicked, transactionItemId } = useContext(MyContext);
 
   function deleteTransactionItem() {
-    setInfoArray((currentArray) => {
-      return currentArray.filter((item) => {
-        if(item.id === transactionItemId){
-          if(item.category === "Expense Reset"){
-            setExpenseItemsArray((currentArray)=> undoExpeseArray)
-          }
-          if(item.category === "Budget Reset"){
-            setBudgetItemsArray((currentArray)=> undoBudgetArray)
-          }
-          return false;
-        }
-        else{
-          return true;
-        }
-      });
-    });
-    
-    setBudgetItemsArray((currentArray) => {
-      return currentArray.filter((item) => item.id !== transactionItemId);
-    });
+    // filtering the infoArray
 
-    setExpenseItemsArray((currentArray) => {
-      return currentArray.filter((item) => item.id !== transactionItemId);
-    });
+    // filtering the InfoArray
+    const action1 = dispatch(setToBudgetArray(undoBudgetArray));
+    const action2 = dispatch(setToExpenseArray(undoExpenseArray));
+
+    dispatch(
+      actionCreator.filterInfoArray({ transactionItemId, action1, action2 })
+    );
+
+    // filtering the budgetItemsArray
+    dispatch(filterBudgetArray(transactionItemId));
+    // filtering the expenseItemsArray
+
+    dispatch(filterExpenseArray(transactionItemId));
     // Add setIsModal and navigate if needed
-    setIsModal(false);
+
+    dispatch(modalNotSet());
     navigate("/");
   }
 
   function budgetReset() {
-    setInfoArray((currentInfoArray) => [
-      {
+    dispatch(
+      addToInfoArray({
         label: "Budget has been reset to 0",
         type: "Budget Reset",
         amount: budget,
         category: "Budget Reset",
         date: new Date().toISOString().split("T")[0],
         id: crypto.randomUUID(),
-      },
-      ...currentInfoArray,
-    ]);
-    setUndoBudgetArray((currentArray)=> budgetItemsArray)
-    setBudgetItemsArray((currentArray)=>[])
-    setIsBudgetReset(false);
+      })
+    );
+    //add to undoBudgetArray
+
+    dispatch(addToUndoBudgetArray(budgetItemsArray));
+
+    // to set the budgetItemsArray to []
+
+    dispatch(resetBudgetArray());
+
+    dispatch(budgetNotReset());
     navigate("/");
   }
 
   function expenseReset() {
-    setInfoArray((currentInfoArray) => [
-      {
+    dispatch(
+      addToInfoArray({
         label: "Expense has been reset to 0",
         type: "Expense Reset",
         amount: expense,
         category: "Expense Reset",
         date: new Date().toISOString().split("T")[0],
         id: crypto.randomUUID(),
-      },
-      ...currentInfoArray,
-    ]);
-    setUndoExpenseArray((currentArray) => expenseItemsArray);
-    setIsExpenseReset(false);
-    setExpenseItemsArray((currentArray) => []);
-    setSpendingCategoryArray((currentArray) => []);
+      })
+    );
+    // set to undoExpenseArray
+    dispatch(addToUndoExpenseArray(expenseItemsArray));
+    //
+    dispatch(expenseNotReset());
+    // Reset expenseItemsArray to []
+    dispatch(resetExpenseArray());
+    // Reset spendingCategoryArray to []
+    dispatch(resetSpendingArray());
     navigate("/");
   }
 
@@ -148,7 +176,7 @@ export function NavLayout() {
           })}
         </div>
         <div className="modal-btn-container">
-          <button className="btn" onClick={() => setIsModal(false)}>
+          <button className="btn" onClick={() => dispatch(modalNotSet())}>
             Exit
           </button>
           <button className="btn" onClick={deleteTransactionItem}>
@@ -174,13 +202,13 @@ export function NavLayout() {
           <button className="btn danger" onClick={budgetReset}>
             Reset Budget
           </button>
-          <button className="btn" onClick={() => setIsBudgetReset(false)}>
+          <button className="btn" onClick={() => dispatch(budgetNotReset())}>
             Exit
           </button>
         </div>
       </div>
 
-      <div className="modal" style={isExpenseReset ? { display: "flex" } : {}}>
+      <div className="modal" style={isexpenseReset ? { display: "flex" } : {}}>
         <div className="modal-text">
           <div className="modal-text-title"></div>
 
@@ -199,7 +227,7 @@ export function NavLayout() {
           <button className="btn danger" onClick={expenseReset}>
             Reset Expense
           </button>
-          <button className="btn" onClick={() => setIsExpenseReset(false)}>
+          <button className="btn" onClick={() => dispatch(expenseNotReset())}>
             Exit
           </button>
         </div>
@@ -208,12 +236,12 @@ export function NavLayout() {
       <div
         className="overlay"
         style={
-          isModal || isbudgetReset || isExpenseReset ? { display: "block" } : {}
+          isModal || isbudgetReset || isexpenseReset ? { display: "block" } : {}
         }
         onClick={() => {
-          setIsModal(false);
-          setIsBudgetReset(false);
-          setIsExpenseReset(false);
+          dispatch(modalNotSet());
+          dispatch(budgetNotReset());
+          dispatch(expenseNotReset);
         }}
       ></div>
     </>

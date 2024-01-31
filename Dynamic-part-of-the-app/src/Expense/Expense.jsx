@@ -1,69 +1,76 @@
 import { useContext, useRef, useState } from "react";
 import { MyContext } from "../SharedContext";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import { addToSpendingArray } from "../Features/spendingCategoryArray";
+import { addToInfoArray } from "../Features/InfoArray";
+import { addToExpenseArray } from "../Features/expenseItemsArray";
+import { expenseNotReset, expenseReset } from "../Features/isExpenseReset";
 
 export function Expense() {
-  const { infoArray, setInfoArray } = useContext(MyContext);
-  const {expenseItemsArray, setExpenseItemsArray} = useContext(MyContext);
-  const { spendingCategoryArray, setSpendingCategoryArray } =
-    useContext(MyContext);
-  const { expense, setExpense } = useContext(MyContext);
+  const infoArray = useSelector((state) => state.infoArray.value);
+
+  const expenseItemsArray = useSelector((state) => state.expenseArray.value);
+  const spendingCategoryArray = useSelector(
+    (state) => state.spendingArray.value
+  );
   const addExpenseLableRef = useRef(null);
   const [addExpense, setAddExpense] = useState("");
   const addExpenseCategoryRef = useRef(null);
-  const { isExpenseReset, setIsExpenseReset } = useContext(MyContext);
-  const navigate = useNavigate();
+  const isexpenseReset = useSelector((state) => state.isExpenseReset.value);
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   function addExpenseSubmit(e) {
     e.preventDefault();
-    if (
-      addExpenseLableRef.current.value === "" ||
-      addExpense === ""
-    ) {
+    if (addExpenseLableRef.current.value === "" || addExpense === "") {
       return;
     }
     const newId = crypto.randomUUID();
-    setInfoArray((currentInfoArray) => [
-      {
+    //add element to the infoArray
+    dispatch(
+      addToInfoArray({
         label: addExpenseLableRef.current.value,
         type: "Expense",
         amount: addExpense,
         category: addExpenseCategoryRef.current.value,
         date: new Date().toISOString().split("T")[0],
         id: newId,
-      },
-      ...currentInfoArray,
-    ]);
-    setSpendingCategoryArray((currentArray) => [
-      {
+      })
+    );
+    // add element to spendingItemsArray
+    dispatch(
+      addToSpendingArray({
         label: addExpenseLableRef.current.value,
         type: "Expense",
         amount: addExpense,
         category: addExpenseCategoryRef.current.value,
         date: new Date().toISOString().split("T")[0],
         id: newId,
-      },
-      ...currentArray,
-    ]);
+      })
+    );
+    // add element to the expenseItemsArray
+    dispatch(
+      addToExpenseArray({
+        label: addExpenseLableRef.current.value,
+        type: "Expense",
+        amount: addExpense,
+        category: addExpenseCategoryRef.current.value,
+        date: new Date().toISOString().split("T")[0],
+        id: newId,
+      })
+    );
 
-    setExpenseItemsArray((currentArray) => [
-      {
-        label: addExpenseLableRef.current.value,
-        type: "Expense",
-        amount: addExpense,
-        category: addExpenseCategoryRef.current.value,
-        date: new Date().toISOString().split("T")[0],
-        id: newId,
-      },
-      ...currentArray,
-    ]);
-    
-    setIsExpenseReset(false);
+    dispatch(expenseNotReset());
     navigate("/");
   }
 
   return (
     <>
+      {
+        console.log(isexpenseReset)
+      }
       <form onSubmit={addExpenseSubmit}>
         <h2>Add an Expense</h2>
 
@@ -75,7 +82,11 @@ export function Expense() {
 
           <div className="expense-amount">
             <div>Amount</div>
-            <input type="number" value={addExpense} onChange={e=>setAddExpense(e.target.value)} />
+            <input
+              type="number"
+              value={addExpense}
+              onChange={(e) => setAddExpense(e.target.value)}
+            />
           </div>
 
           <div className="expense-category">
@@ -93,7 +104,7 @@ export function Expense() {
 
       <div className="reset-expenses">
         <h2>Reset Your Expenses</h2>
-        <button className="btn danger" onClick={() => setIsExpenseReset(true)}>
+        <button className="btn danger" onClick={() => dispatch(expenseReset())}>
           Reset Expenses
         </button>
       </div>
