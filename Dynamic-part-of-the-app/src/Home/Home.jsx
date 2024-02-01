@@ -50,16 +50,18 @@ export function Home() {
 
   useEffect(() => {
     let currentBudget = 0;
-    let addedBudget = 0;
+    
     for (const item of budgetItemsArray) {
       if (item.type === "Added Budget") {
-        addedBudget += parseFloat(item.amount);
+        currentBudget += parseFloat(item.amount);
       } else if (item.type === "Budget") {
-        currentBudget = addedBudget + parseFloat(item.amount);
+        currentBudget += parseFloat(item.amount);
         break;
       }
     }
+    console.log(currentBudget);
     dispatch(setBudget(currentBudget));
+    
   }, [budgetItemsArray]);
 
   // SET THE EXPENSE ITEMS ARRAY TO THE LOCAL STORAGE
