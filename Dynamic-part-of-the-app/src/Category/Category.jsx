@@ -1,5 +1,3 @@
-import { useContext, useState } from "react";
-import { MyContext } from "../SharedContext";
 import { useSelector } from "react-redux";
 
 export function Category() {
@@ -8,9 +6,9 @@ export function Category() {
     (state) => state.spendingArray.value
   );
   const budget = useSelector((state) => state.budget.value);
-
   const isexpenseReset = useSelector((state) => state.isExpenseReset.value);
 
+  // extracting category array from the spendingCategoryArray
   let categoryArray = isexpenseReset
     ? []
     : [
@@ -18,7 +16,7 @@ export function Category() {
       ].reverse();
 
   categoryArray = categoryArray.filter((category) => category !== "Budget");
-
+// 
   return (
     <>
       <div className="spending-category-title">Spending Catagory</div>

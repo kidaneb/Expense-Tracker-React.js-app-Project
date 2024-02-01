@@ -135,8 +135,7 @@ export function Home() {
   }, [data]);
   return (
     <>
-      {JSON.stringify(undoBudgetArray)}
-      {JSON.stringify(budgetItemsArray)}
+      
       <div className="current-balance">
         Your Current Balance is ${currentBalance}
       </div>

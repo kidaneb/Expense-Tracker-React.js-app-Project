@@ -1,25 +1,22 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { MyContext } from "../SharedContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useRef } from "react";
+
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToInfoArray } from "../Features/InfoArray";
 import { addToBudgetArray } from "../Features/budgetItemsArray";
 import { budgetReset } from "../Features/isBudgetReset";
 
 export function Budget() {
-  const navigate = useNavigate();
+  const infoArray = useSelector((state) => state.infoArray.value);
   const budgetItemsArray = useSelector((state) => state.budgetArray.value);
   const budgetRef = useRef("");
-
-  const infoArray = useSelector((state) => state.infoArray.value);
-  const dispatch = useDispatch();
-
-  // const { isbudgetReset, setIsBudgetReset } = useContext(MyContext);
   const isbudgetReset = useSelector((state) => state.isBudgetReset.value);
   //Add To Budget Declarations
   const addBudgetLabelRef = useRef("");
   const addBudgetRef = useRef(0);
   //
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Set Budget Submit Function
 
@@ -54,7 +51,7 @@ export function Budget() {
     );
     navigate("/");
   }
-  //
+  
   // Add To Budget Submit Function
 
   function addToBudgetSubmit(e) {

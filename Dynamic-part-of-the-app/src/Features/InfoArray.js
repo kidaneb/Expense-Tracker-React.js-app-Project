@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { setToExpenseArray } from "./expenseItemsArray";
-import { setToBudgetArray } from "./budgetItemsArray";
 
 const infoArraySlice = createSlice({
   name: "infoArray",
@@ -23,27 +21,12 @@ const infoArraySlice = createSlice({
         }
       });
     },
-    // filterInfoArray: (state, action) => {
-    //   const { id,action1, action2 } = action.payload;
-    //   const filteredValue = state.value.filter((item) => {
-    //     if (item.id === id) {
-    //       if (item.category === "Expense Reset") {
-    //         action2;
-    //       }
-    //       if (item.category === "Budget Reset") {
-    //         action1;
-    //       }
-    //       return false;
-    //     } else {
-    //       return true;
-    //     }
-    //   });
-
-    //   state.value = filteredValue;
-    // },
+    filterInfoArray:(state,action)=>{
+      state.value = state.value.filter(item=> item.id !== action.payload);
+    }
   },
 });
 
-export const { addToInfoArray, removeFromInfoArray } = infoArraySlice.actions;
+export const { addToInfoArray, filterInfoArray,removeFromInfoArray } = infoArraySlice.actions;
 const infoArrayReducer = infoArraySlice.reducer;
 export default infoArrayReducer;

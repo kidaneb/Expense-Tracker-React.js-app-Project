@@ -1,4 +1,4 @@
-import { configureStore,applyMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import budgetArrayReducer from "../Features/budgetItemsArray";
 import expenseArrayReducer from "../Features/expenseItemsArray";
 import spendingArrayReducer from "../Features/spendingCategoryArray";
@@ -11,7 +11,7 @@ import isBudgetResetReducer from "../Features/isBudgetReset";
 import isExpenseResetReducer from "../Features/isExpenseReset";
 import modalReducer from "../Features/modal";
 import transactionItemIdReducer from "../Features/transactionItemId";
- export default configureStore({
+export default configureStore({
   reducer: {
     infoArray: infoArrayReducer,
     budgetArray: budgetArrayReducer,
@@ -19,12 +19,11 @@ import transactionItemIdReducer from "../Features/transactionItemId";
     spendingArray: spendingArrayReducer,
     undoBudgetArray: undoBudgetArrayReducer,
     undoExpenseArray: undoExpenseArrayReducer,
-    budget:budgetReducer,
-    expense:expenseReducer,
-    isBudgetReset:isBudgetResetReducer,
-    isExpenseReset:isExpenseResetReducer,
-    isModal:modalReducer,
-    transactionItemId:transactionItemIdReducer
+    budget: budgetReducer,
+    expense: expenseReducer,
+    isBudgetReset: isBudgetResetReducer,
+    isExpenseReset: isExpenseResetReducer,
+    isModal: modalReducer,
+    transactionItemId: transactionItemIdReducer,
   },
 });
- 

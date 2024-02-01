@@ -68,9 +68,7 @@ export function Expense() {
 
   return (
     <>
-      {
-        console.log(isexpenseReset)
-      }
+      
       <form onSubmit={addExpenseSubmit}>
         <h2>Add an Expense</h2>
 

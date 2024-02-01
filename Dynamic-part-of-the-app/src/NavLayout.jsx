@@ -13,8 +13,7 @@ import {
 import { resetSpendingArray } from "./Features/spendingCategoryArray.js";
 import { addToUndoBudgetArray } from "./Features/undoBudgetArray.js";
 import { addToUndoExpenseArray } from "./Features/undoExpenseArray.js";
-import { addToInfoArray } from "./Features/InfoArray.js";
-import * as actionCreator from "./Features/actions.js";
+import { addToInfoArray, filterInfoArray } from "./Features/InfoArray.js";
 import {
   filterExpenseArray,
   resetExpenseArray,
@@ -23,6 +22,7 @@ import {
 import { budgetNotReset } from "./Features/isBudgetReset.js";
 import { expenseNotReset } from "./Features/isExpenseReset.js";
 import { modalNotSet } from "./Features/modal.js";
+
 export function NavLayout() {
   const infoArray = useSelector((state) => state.infoArray.value);
   const budgetItemsArray = useSelector((state) => state.budgetArray.value);
@@ -55,22 +55,25 @@ export function NavLayout() {
 
   function deleteTransactionItem() {
     // filtering the infoArray
-
-    // filtering the InfoArray
-    const action1 = dispatch(setToBudgetArray(undoBudgetArray));
-    const action2 = dispatch(setToExpenseArray(undoExpenseArray));
-
-    dispatch(
-      actionCreator.filterInfoArray({ transactionItemId, action1, action2 })
-    );
+    for (const item of infoArray) {
+      if (item.id === transactionItemId) {
+        if (item.category === "Budget Reset") {
+          dispatch(setToBudgetArray(undoBudgetArray));
+        }
+        if (item.category === "Expense Reset") {
+          dispatch(setToExpenseArray(undoExpenseArray));
+        }
+      }
+    }
+    dispatch(filterInfoArray(transactionItemId));
 
     // filtering the budgetItemsArray
     dispatch(filterBudgetArray(transactionItemId));
+
     // filtering the expenseItemsArray
-
     dispatch(filterExpenseArray(transactionItemId));
-    // Add setIsModal and navigate if needed
 
+    // Add setIsModal and navigate if needed
     dispatch(modalNotSet());
     navigate("/");
   }
@@ -134,7 +137,6 @@ export function NavLayout() {
           </div>
         </div>
       </div>
-
       <div className="modal" style={isModal ? { display: "flex" } : {}}>
         <div className="modal-text">
           <div className="modal-text-title">Transaction History</div>
@@ -184,7 +186,7 @@ export function NavLayout() {
           </button>
         </div>
       </div>
-
+      {/* Budget reset modal */}
       <div className="modal" style={isbudgetReset ? { display: "flex" } : {}}>
         <div className="modal-text">
           <div className="modal-text-title"></div>
@@ -207,7 +209,7 @@ export function NavLayout() {
           </button>
         </div>
       </div>
-
+      {/* reset expense modal */}
       <div className="modal" style={isexpenseReset ? { display: "flex" } : {}}>
         <div className="modal-text">
           <div className="modal-text-title"></div>
@@ -232,7 +234,7 @@ export function NavLayout() {
           </button>
         </div>
       </div>
-
+      {/* Overlay */}
       <div
         className="overlay"
         style={
