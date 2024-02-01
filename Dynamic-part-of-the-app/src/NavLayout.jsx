@@ -2,29 +2,27 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { Header } from "./Header";
 import { NavBar } from "./NavBar";
 import { useDispatch, useSelector } from "react-redux";
+import { addToUndoBudgetArray } from "./Features/undoBudgetArray.js";
+import { addToUndoExpenseArray } from "./Features/undoExpenseArray.js";
+import { addToInfoArray, filterInfoArray } from "./Features/InfoArray.js";
+import { budgetNotReset } from "./Features/isBudgetReset.js";
+import { expenseNotReset } from "./Features/isExpenseReset.js";
+import { modalNotSet } from "./Features/modal.js";
+import {
+  filterExpenseArray,
+  resetExpenseArray,
+  setToExpenseArray,
+} from "./Features/expenseItemsArray.js";
 import {
   filterBudgetArray,
   resetBudgetArray,
   setToBudgetArray,
 } from "./Features/budgetItemsArray.js";
 
-import { addToUndoBudgetArray } from "./Features/undoBudgetArray.js";
-import { addToUndoExpenseArray } from "./Features/undoExpenseArray.js";
-import { addToInfoArray, filterInfoArray } from "./Features/InfoArray.js";
-import {
-  filterExpenseArray,
-  resetExpenseArray,
-  setToExpenseArray,
-} from "./Features/expenseItemsArray.js";
-import { budgetNotReset } from "./Features/isBudgetReset.js";
-import { expenseNotReset } from "./Features/isExpenseReset.js";
-import { modalNotSet } from "./Features/modal.js";
-
 export function NavLayout() {
   const infoArray = useSelector((state) => state.infoArray.value);
   const budgetItemsArray = useSelector((state) => state.budgetArray.value);
   const expenseItemsArray = useSelector((state) => state.expenseArray.value);
-  
 
   const budget = useSelector((state) => state.budget.value);
   const expense = useSelector((state) => state.expense.value);
@@ -40,40 +38,56 @@ export function NavLayout() {
   const transactionItemId = useSelector(
     (state) => state.transactionItemId.value
   );
+  //
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // STYLING FOR THE MODALS
   const modalStyle = {
     zIndex: 5,
     opacity: 0.3,
   };
 
+  // FUNCTION TO DELETE THE TRANSACTIONS
+
   function deleteTransactionItem() {
-    // filtering the infoArray
+    // FILTERING THE INFO ARRAY AND SETTING UNDO ARRAYS WHEN NEEDED
     for (const item of infoArray) {
       if (item.id === transactionItemId) {
         if (item.category === "Budget Reset") {
+          // SETTING BUDGET ARRAY TO UNDO BUDGET ARRAY
+
           dispatch(setToBudgetArray(undoBudgetArray));
         }
         if (item.category === "Expense Reset") {
+          // SETTING EXPENSE ARRAY TO UNDO EXPENSE ARRAY
+
           dispatch(setToExpenseArray(undoExpenseArray));
         }
       }
     }
+    // FILTERING THE INFO ARRAY
+
     dispatch(filterInfoArray(transactionItemId));
 
-    // filtering the budgetItemsArray
+    // FILTERING THE BUDGET ITEMS ARRAY
+
     dispatch(filterBudgetArray(transactionItemId));
 
-    // filtering the expenseItemsArray
+    // FILTERING THE EXPENSE ITEMS ARRAY
+
     dispatch(filterExpenseArray(transactionItemId));
 
-    // Add setIsModal and navigate if needed
+    // SET THE MODAL CONDITION AND NAVIGATE TO THE HOME PAGE
     dispatch(modalNotSet());
     navigate("/");
   }
 
+  // FUNCTION FOR BUDGET RESET
+
   function budgetReset() {
+    // ADD ITEM TO THE INFO ARRAY
+
     dispatch(
       addToInfoArray({
         label: "Budget has been reset to 0",
@@ -84,19 +98,25 @@ export function NavLayout() {
         id: crypto.randomUUID(),
       })
     );
-    //add to undoBudgetArray
+    //SET UNDO BUDGET ARRAY TO THE BUDGET ITEMS ARRAY
 
     dispatch(addToUndoBudgetArray(budgetItemsArray));
 
-    // to set the budgetItemsArray to []
+    // SET THE BUDGET ITEMS ARRAY TO EMPTY []
 
     dispatch(resetBudgetArray());
+
+    // SET THE BUDGET RESET CONDITION AND NAVIGATE TO THE HOME PAGE
 
     dispatch(budgetNotReset());
     navigate("/");
   }
 
+  //  FUNCTION FOR EXPENSE RESET
+
   function expenseReset() {
+    // ADD ITEM TO THE INFO ARRAY
+
     dispatch(
       addToInfoArray({
         label: "Expense has been reset to 0",
@@ -107,14 +127,18 @@ export function NavLayout() {
         id: crypto.randomUUID(),
       })
     );
-    // set to undoExpenseArray
+
+    //SET UNDO EXPENSE ARRAY TO THE EXPENSE ITEMS ARRAY
+
     dispatch(addToUndoExpenseArray(expenseItemsArray));
-    //
-    dispatch(expenseNotReset());
-    // Reset expenseItemsArray to []
+
+    // SET THE EXPENSE ITEMS ARRAY TO EMPTY []
+
     dispatch(resetExpenseArray());
-    // Reset spendingCategoryArray to []
-    dispatch(resetSpendingArray());
+
+    // SET THE EXPENSE RESET CONDITION AND NAVIGATE TO THE HOME PAGE
+
+    dispatch(expenseNotReset());
     navigate("/");
   }
 

@@ -1,5 +1,4 @@
 import { useRef } from "react";
-
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToInfoArray } from "../Features/InfoArray";
@@ -11,14 +10,18 @@ export function Budget() {
   const budgetItemsArray = useSelector((state) => state.budgetArray.value);
   const budgetRef = useRef("");
   const isbudgetReset = useSelector((state) => state.isBudgetReset.value);
-  //Add To Budget Declarations
+
+  // ADD TO BUDGET DECLARATIONS
+
   const addBudgetLabelRef = useRef("");
   const addBudgetRef = useRef(0);
+
   //
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Set Budget Submit Function
+  // SETTING BUDGET SUBMIT FUNCTION
 
   function setBudgetSubmit(e) {
     e.preventDefault();
@@ -28,6 +31,8 @@ export function Budget() {
     }
 
     const newId = crypto.randomUUID();
+
+    // ADDING ITEMS TO THE INFOARRAY
 
     dispatch(
       addToInfoArray({
@@ -39,6 +44,9 @@ export function Budget() {
         id: newId,
       })
     );
+
+    //  ADDING ITEMS TO THE BUDGET ITEMS ARRAY
+
     dispatch(
       addToBudgetArray({
         label: addBudgetLabelRef.current.value,
@@ -49,10 +57,13 @@ export function Budget() {
         id: newId,
       })
     );
+
+    //
+
     navigate("/");
   }
-  
-  // Add To Budget Submit Function
+
+  //  SETTING ADD TO BUDGET SUBMIT FUNCTION
 
   function addToBudgetSubmit(e) {
     e.preventDefault();
@@ -74,6 +85,8 @@ export function Budget() {
 
     const newId = crypto.randomUUID();
 
+    // ADDING ITEMS TO THE INFOARRAY
+
     dispatch(
       addToInfoArray({
         label: addBudgetLabelRef.current.value,
@@ -85,6 +98,8 @@ export function Budget() {
       })
     );
 
+    //  ADDING ITEMS TO THE BUDGET ITEMS ARRAY
+
     dispatch(
       addToBudgetArray({
         label: addBudgetLabelRef.current.value,
@@ -95,6 +110,8 @@ export function Budget() {
         id: newId,
       })
     );
+
+    //
 
     navigate("/");
   }

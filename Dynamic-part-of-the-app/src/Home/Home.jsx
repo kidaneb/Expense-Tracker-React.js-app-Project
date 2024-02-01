@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ExpenseTrackerChart } from "../ExpenseTrackerChart";
 import { useDispatch, useSelector } from "react-redux";
-import { setToBudgetArray } from "../Features/budgetItemsArray";
 import { setBudget } from "../Features/budget";
 import { setExpense } from "../Features/expense";
 import { modalSet } from "../Features/modal";
@@ -15,21 +14,28 @@ export function Home() {
   const undoBudgetArray = useSelector((state) => state.undoBudgetArray.value);
   const budgetRef = useRef(0);
   const budget = useSelector((state) => state.budget.value);
+
   // EXPENSE RELATED DECLARATIONS
 
   const expenseItemsArray = useSelector((state) => state.expenseArray.value);
   const expenseRef = useRef(0);
   const expense = useSelector((state) => state.expense.value);
+
   //CURRENT BALANCE DECLARATION
 
   const [currentBalance, setCurrentBalance] = useState(0);
 
   //MODAL RELATED DECLARATION
+
   const isModal = useSelector((state) => state.isModal.value);
   const transactionItemId = useSelector(
     (state) => state.transactionItemId.value
   );
+
+  //
+
   const dispatch = useDispatch();
+
   // BUDGET RELATED EFFECTS
 
   useEffect(() => {
@@ -38,12 +44,12 @@ export function Home() {
 
   //
   // SETTING THE BUDGET ITEMS ARRAY TO THE LOCAL STORAGE
+
   useEffect(() => {
     localStorage.setItem("BudgetItemsArray", JSON.stringify(budgetItemsArray));
   }, [budgetItemsArray]);
-  //
 
-  // SETTING THE CURRENT BUDGET
+  // CALCULATING AND SETTING THE CURRENT BUDGET
 
   useEffect(() => {
     let currentBudget = 0;
@@ -56,11 +62,11 @@ export function Home() {
         break;
       }
     }
-    console.log(currentBudget);
     dispatch(setBudget(currentBudget));
   }, [budgetItemsArray]);
 
   // SET THE EXPENSE ITEMS ARRAY TO THE LOCAL STORAGE
+
   useEffect(() => {
     localStorage.setItem(
       "ExpenseItemsArray",
@@ -69,7 +75,6 @@ export function Home() {
   }, [expenseItemsArray]);
 
   // CALCULATING THE CURRENT EXPENSE
-
   useEffect(() => {
     if (expenseItemsArray.length !== 0) {
       const currentExpense = expenseItemsArray.reduce((sum, item) => {
@@ -82,8 +87,6 @@ export function Home() {
       dispatch(setExpense(parseFloat(0)));
     }
   }, [expenseItemsArray]);
-
-  // CALCULATING THE CURRENT BUDGET
 
   // TO SET THE BUDGET TO THE DISPLAY
 
@@ -103,12 +106,15 @@ export function Home() {
     setCurrentBalance((cb) => budget - expense);
   }, [budget, expense]);
 
-  // function for clicked transaction from transaction history
+  // FUNCTION FOR CLICKED TRANSACTION FROM TRANSACTION HISTORY
+
   function transactionClicked(id) {
     dispatch(modalSet());
     dispatch(setTransactionItemId(id));
   }
+
   // DATA DECLARATION AND SOME LOGIC USED FOR THE PIE CHART
+
   const data = [
     { id: 0, value: parseFloat(expense), label: "Total Expense", color: "red" },
     {
@@ -124,6 +130,9 @@ export function Home() {
       return sum + parseFloat(item.value);
     }, 0);
   }, [data]);
+
+  //
+
   return (
     <>
       <div className="current-balance">
@@ -167,7 +176,7 @@ export function Home() {
         </div>
 
         <div className="pichart-display">
-          {/* {valueSum !== 0 && <ExpenseTrackerChart data={data} />} */}
+          {valueSum !== 0 && <ExpenseTrackerChart data={data} />}
         </div>
       </div>
     </>
