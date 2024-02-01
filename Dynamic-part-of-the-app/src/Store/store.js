@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import budgetArrayReducer from "../Features/budgetItemsArray";
 import expenseArrayReducer from "../Features/expenseItemsArray";
-import spendingArrayReducer from "../Features/spendingCategoryArray";
 import undoBudgetArrayReducer from "../Features/undoBudgetArray";
 import undoExpenseArrayReducer from "../Features/undoExpenseArray";
 import infoArrayReducer from "../Features/InfoArray";
@@ -16,7 +15,6 @@ export default configureStore({
     infoArray: infoArrayReducer,
     budgetArray: budgetArrayReducer,
     expenseArray: expenseArrayReducer,
-    spendingArray: spendingArrayReducer,
     undoBudgetArray: undoBudgetArrayReducer,
     undoExpenseArray: undoExpenseArrayReducer,
     budget: budgetReducer,

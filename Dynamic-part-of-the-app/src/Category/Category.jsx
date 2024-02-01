@@ -2,8 +2,9 @@ import { useSelector } from "react-redux";
 
 export function Category() {
   const infoArray = useSelector((state) => state.infoArray.value);
-  const spendingCategoryArray = useSelector(
-    (state) => state.spendingArray.value
+
+  const expenseItemsArray = useSelector(
+    (state) => state.expenseArray.value
   );
   const budget = useSelector((state) => state.budget.value);
   const isexpenseReset = useSelector((state) => state.isExpenseReset.value);
@@ -12,10 +13,12 @@ export function Category() {
   let categoryArray = isexpenseReset
     ? []
     : [
-        ...new Set(spendingCategoryArray.map((item) => item.category)),
+        ...new Set(expenseItemsArray.map((item) => item.category)),
       ].reverse();
 
   categoryArray = categoryArray.filter((category) => category !== "Budget");
+  console.log(expenseItemsArray);
+  console.log(categoryArray)
 // 
   return (
     <>

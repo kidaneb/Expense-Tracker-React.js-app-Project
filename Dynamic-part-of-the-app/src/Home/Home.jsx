@@ -1,5 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { MyContext } from "../SharedContext";
+import { useEffect, useRef, useState } from "react";
 import { ExpenseTrackerChart } from "../ExpenseTrackerChart";
 import { useDispatch, useSelector } from "react-redux";
 import { setToBudgetArray } from "../Features/budgetItemsArray";
@@ -17,9 +16,7 @@ export function Home() {
   const budgetRef = useRef(0);
   const budget = useSelector((state) => state.budget.value);
   // EXPENSE RELATED DECLARATIONS
-  const spendingCategoryArray = useSelector(
-    (state) => state.spendingArray.value
-  );
+
   const expenseItemsArray = useSelector((state) => state.expenseArray.value);
   const expenseRef = useRef(0);
   const expense = useSelector((state) => state.expense.value);
@@ -95,14 +92,7 @@ export function Home() {
   }, [budget]);
 
   // EXPENSE RELATED EFFECTS
-  // saving spending category array to the local storage
-  useEffect(() => {
-    localStorage.setItem(
-      "spendingCategoryArray",
-      JSON.stringify(spendingCategoryArray)
-    );
-  }, [spendingCategoryArray]);
-  // set the expense on the display
+
   useEffect(() => {
     expenseRef.current.textContent = "$" + expense;
   });

@@ -1,8 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { Header } from "./Header";
 import { NavBar } from "./NavBar";
-import { useContext } from "react";
-import { MyContext, SharedContext } from "./SharedContext.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import {
   filterBudgetArray,
@@ -10,7 +8,6 @@ import {
   setToBudgetArray,
 } from "./Features/budgetItemsArray.js";
 
-import { resetSpendingArray } from "./Features/spendingCategoryArray.js";
 import { addToUndoBudgetArray } from "./Features/undoBudgetArray.js";
 import { addToUndoExpenseArray } from "./Features/undoExpenseArray.js";
 import { addToInfoArray, filterInfoArray } from "./Features/InfoArray.js";
@@ -27,9 +24,7 @@ export function NavLayout() {
   const infoArray = useSelector((state) => state.infoArray.value);
   const budgetItemsArray = useSelector((state) => state.budgetArray.value);
   const expenseItemsArray = useSelector((state) => state.expenseArray.value);
-  const spendingCategoryArray = useSelector(
-    (state) => state.spendingArray.value
-  );
+  
 
   const budget = useSelector((state) => state.budget.value);
   const expense = useSelector((state) => state.expense.value);

@@ -3,7 +3,6 @@ import { MyContext } from "../SharedContext";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addToSpendingArray } from "../Features/spendingCategoryArray";
 import { addToInfoArray } from "../Features/InfoArray";
 import { addToExpenseArray } from "../Features/expenseItemsArray";
 import { expenseNotReset, expenseReset } from "../Features/isExpenseReset";
@@ -12,9 +11,7 @@ export function Expense() {
   const infoArray = useSelector((state) => state.infoArray.value);
 
   const expenseItemsArray = useSelector((state) => state.expenseArray.value);
-  const spendingCategoryArray = useSelector(
-    (state) => state.spendingArray.value
-  );
+  
   const addExpenseLableRef = useRef(null);
   const [addExpense, setAddExpense] = useState("");
   const addExpenseCategoryRef = useRef(null);
@@ -39,17 +36,7 @@ export function Expense() {
         id: newId,
       })
     );
-    // add element to spendingItemsArray
-    dispatch(
-      addToSpendingArray({
-        label: addExpenseLableRef.current.value,
-        type: "Expense",
-        amount: addExpense,
-        category: addExpenseCategoryRef.current.value,
-        date: new Date().toISOString().split("T")[0],
-        id: newId,
-      })
-    );
+  
     // add element to the expenseItemsArray
     dispatch(
       addToExpenseArray({
