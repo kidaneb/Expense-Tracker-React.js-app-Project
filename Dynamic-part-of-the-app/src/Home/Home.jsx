@@ -50,7 +50,7 @@ export function Home() {
 
   useEffect(() => {
     let currentBudget = 0;
-    
+
     for (const item of budgetItemsArray) {
       if (item.type === "Added Budget") {
         currentBudget += parseFloat(item.amount);
@@ -61,7 +61,6 @@ export function Home() {
     }
     console.log(currentBudget);
     dispatch(setBudget(currentBudget));
-    
   }, [budgetItemsArray]);
 
   // SET THE EXPENSE ITEMS ARRAY TO THE LOCAL STORAGE
@@ -137,7 +136,6 @@ export function Home() {
   }, [data]);
   return (
     <>
-      
       <div className="current-balance">
         Your Current Balance is ${currentBalance}
       </div>
