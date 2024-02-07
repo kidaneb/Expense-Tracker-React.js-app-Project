@@ -1,7 +1,7 @@
 import { Paper } from "@mui/material";
-import { ExpenseTrackerChart } from "../../ExpenseTrackerChart";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import {ExpenseTrackerChart} from "./ExpenseTrackerChart"
 
 export function PieChartDisplay() {
   const budget = useSelector((state) => state.budget.value);
@@ -15,7 +15,7 @@ export function PieChartDisplay() {
       id: 1,
       value: parseFloat(budget - expense),
       label: "Remaining Budget",
-      color: "blue",
+      color: "rgb(18, 230, 78)",
     },
   ];
 
