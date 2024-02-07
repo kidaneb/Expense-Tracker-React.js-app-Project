@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { Card, Paper, Typography } from "@mui/material";
 
 export function Category() {
   const infoArray = useSelector((state) => state.infoArray.value);
@@ -17,22 +18,25 @@ export function Category() {
   //
   return (
     <>
-      <div className="spending-category-title">Spending Catagory</div>
+      {/* <div className="spending-category-title">Spending Catagory</div> */}
+      <Typography variant="h4" className="spending-category-title">Spending Category</Typography>
       <div className="spending-categories">
+        
         {categoryArray.map((element, index) => {
           let sum = 0;
           return (
-            <div className="category" key={index}>
-              <div className="category-name">{element}</div>
-              {infoArray.map((item) => {
+            <Card className="category" key={index} elevation={5}>
+              <Typography variant="h6">{element}</Typography>
+              {expenseItemsArray.map((item) => {
                 if (item.category === element) {
                   sum += parseFloat(item.amount);
                 }
               })}
-              <div className="category-spending">{sum}</div>
-            </div>
+              <Typography variant="h6">{sum}</Typography>
+            </Card>
           );
         })}
+
       </div>
     </>
   );

@@ -4,12 +4,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToInfoArray } from "../Features/InfoArray";
 import { addToBudgetArray } from "../Features/budgetItemsArray";
 import { budgetReset } from "../Features/isBudgetReset";
+import {
+  Button,
+  FormControl,
+  OutlinedInput,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 export function Budget() {
   const infoArray = useSelector((state) => state.infoArray.value);
   const budgetItemsArray = useSelector((state) => state.budgetArray.value);
   const budgetRef = useRef("");
   const isbudgetReset = useSelector((state) => state.isBudgetReset.value);
+  const isDarkMode = useSelector((state) => state.darkMode.value);
 
   // ADD TO BUDGET DECLARATIONS
 
@@ -118,34 +127,90 @@ export function Budget() {
 
   return (
     <>
-      <form onSubmit={setBudgetSubmit}>
-        <h2>Set Your Income / Budget</h2>
-        <div>
-          <div>Enter your budget</div>
-          <input type="number" ref={budgetRef} />
-        </div>
-        <button className="btn">Set Budget</button>
-      </form>
 
-      <form onSubmit={addToBudgetSubmit}>
-        <h2>Add an Income Source</h2>
-        <div>
-          <div>Label</div>
-          <input type="text" ref={addBudgetLabelRef} />
-        </div>
-        <div>
-          <div>Amount</div>
-          <input type="number" ref={addBudgetRef} />
-        </div>
-        <button className="btn">Add to Budget</button>
-      </form>
+      <Paper
+        square
+        className="form"
+        sx={{
+          borderBottom: isDarkMode ? "0.5px solid white" : "0.1px solid black",
+          boxShadow: "none",
+        }}
+        backDrop={false}
+      >
+        <form onSubmit={setBudgetSubmit}>
+          
 
-      <div className="reset-budget">
-        <h2>Reset budget</h2>
-        <button className="btn danger" onClick={() => dispatch(budgetReset())}>
+          <Typography variant="h4" gutterBottom>
+            Set Your Income / Budget
+          </Typography>
+          <div>
+            <Typography>Enter your budget</Typography>
+            <OutlinedInput
+              sx={{ height: 40, margin: "1em auto" }}
+              placeholder="Budget"
+              inputRef={budgetRef}
+            />
+          </div>
+
+          <Button variant="contained" color="success" type="submit">
+            Set Budget
+          </Button>
+        </form>
+      </Paper>
+
+      <Paper
+        square
+        className="form"
+        sx={{
+          borderBottom: isDarkMode ? "0.5px solid white" : "0.1px solid black",
+          boxShadow: "none",
+        }}
+      >
+        <form onSubmit={addToBudgetSubmit}>
+          
+          <Typography variant="h5" gutterBottom>
+            Add an Income Source
+          </Typography>
+          <div>
+            <Typography>Label</Typography>
+
+            <OutlinedInput
+              sx={{ height: 40, margin: "1em auto" }}
+              inputRef={addBudgetLabelRef}
+              placeholder="label"
+            />
+          </div>
+          <div>
+            <Typography>Amount</Typography>
+
+            <OutlinedInput
+              placeholder="Amount"
+              type="number"
+              sx={{ height: 40, margin: "1em auto" }}
+              inputRef={addBudgetRef}
+            />
+          </div>
+          <Button type="submit" variant="contained" color="success">
+            Add to Budget
+          </Button>
+        </form>
+      </Paper>
+
+      <Paper className="reset-budget" square sx={{ boxShadow: "none" }}>
+       
+
+        <Typography variant="h6" gutterBottom>
           Reset Budget
-        </button>
-      </div>
+        </Typography>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => dispatch(budgetReset())}
+        >
+          Reset Budget
+        </Button>
+      </Paper>
+
     </>
   );
 }

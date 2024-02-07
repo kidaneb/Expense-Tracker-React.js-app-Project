@@ -5,6 +5,7 @@ import { setBudget } from "../Features/budget";
 import { setExpense } from "../Features/expense";
 import { modalSet } from "../Features/modal";
 import { setTransactionItemId } from "../Features/transactionItemId";
+import { Card, Paper, Typography } from "@mui/material";
 
 export function Home() {
   //BUDGET RELATED DECLARATIONS
@@ -91,13 +92,13 @@ export function Home() {
   // TO SET THE BUDGET TO THE DISPLAY
 
   useEffect(() => {
-    budgetRef.current.textContent = `$${budget}`;
+    budgetRef.current.textContent = numberToMoneyFormat(budget);
   }, [budget]);
 
-  // EXPENSE RELATED EFFECTS
+  // SET THE EXPENSE TO THE DISPLAY
 
   useEffect(() => {
-    expenseRef.current.textContent = "$" + expense;
+    expenseRef.current.textContent = numberToMoneyFormat(expense);
   });
 
   // CURRENT BALANCE CALCULATION
@@ -111,6 +112,15 @@ export function Home() {
   function transactionClicked(id) {
     dispatch(modalSet());
     dispatch(setTransactionItemId(id));
+  }
+  // FUNCTION TO CONVERT NUMBER INTO MONEY FORMAT
+
+  function numberToMoneyFormat(number) {
+    return number.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+    });
   }
 
   // DATA DECLARATION AND SOME LOGIC USED FOR THE PIE CHART
@@ -135,50 +145,107 @@ export function Home() {
 
   return (
     <>
-      <div className="current-balance">
-        Your Current Balance is ${currentBalance}
-      </div>
+     
+      <Paper className="current-balance" square elevation={5}>
+        <Typography className="current-balance-text" sx={{ fontSize: "2rem" }}>
+          Your Current Balance is {numberToMoneyFormat(currentBalance)}
+        </Typography>
+      </Paper>
 
-      <div className="budget-expense-display">
-        <div className="budget-display">
-          <div className="budget-title">Budget</div>
-          <div className="budget-value" ref={budgetRef}></div>
-        </div>
 
-        <div className="expense-display">
-          <div className="expense-title">Expense</div>
-          <div className="expense-value" ref={expenseRef}></div>
-        </div>
-      </div>
+      <Paper className="budget-expense-display" square elevation={1}>
+        <Card className="budget-display" elevation={5}>
+          <Typography className="budget-title" sx={{ fontSize: "2rem" }}>
+            Budget
+          </Typography>
+          <Typography
+            className="budget-value"
+            sx={{ fontSize: "2rem" }}
+            ref={budgetRef}
+          ></Typography>
+        </Card>
 
-      <div className="transaction-history-container">
-        <div className="transaction-history">
-          <div className="transaction-history-title">Transaction History</div>
+        <Card className="expense-display" elevation={5}>
+          <Typography className="expense-title" sx={{ fontSize: "2rem" }}>
+            Expense
+          </Typography>
+          <Typography
+            className="expense-value"
+            sx={{ fontSize: "2rem" }}
+            ref={expenseRef}
+          ></Typography>
+        </Card>
+      </Paper>
 
-          <ul>
+      <Paper
+        className="transaction-history-container"
+        elevation={1}
+        square
+        sx={{ boxShadow: "none" }}
+      >
+        <Paper className="transaction-history" elevation={5} square>
+          <div className="transaction-history-title">
+            <Typography sx={{ fontSize: "1.5rem" }}>
+              Transaction History
+            </Typography>
+          </div>
+
+          <Paper
+            className="transaction-list"
+            elevation={5}
+            square={false}
+            sx={{
+              boxShadow: "none",
+            }}
+          >
             {infoArray.map((transaction) => {
               return (
-                <li
+                <Card
+                  elevation={20}
                   className="transaction-list-item"
+                  sx={{
+                    boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.2)",
+                  }}
                   key={transaction.id}
                   onClick={() => transactionClicked(transaction.id)}
+                  style={
+                    transaction.category === "Budget" ||
+                    transaction.category === "Expense Reset"
+                      ? { borderRight: " 5px solid rgb(18, 230, 78)" }
+                      : { borderRight: "5px solid red" }
+                  }
                 >
-                  {transaction.label}{" "}
-                  {`${
-                    transaction.category === "Budget" || "Expense Reset"
-                      ? "+"
-                      : "-"
-                  }$${transaction.amount}`}
-                </li>
+                  <div className="transaction-item-label">
+                    <Typography>{transaction.label}</Typography>
+                  </div>
+
+                  <div
+                    className="transaction-item-amount"
+                    style={
+                      transaction.category === "Budget" ||
+                      transaction.category === "Expense Reset"
+                        ? { color: "rgb(18, 230, 78)" }
+                        : { color: "red" }
+                    }
+                  >
+                    <Typography>
+                      {transaction.category === "Budget" ||
+                      transaction.category === "Expense Reset"
+                        ? "+"
+                        : "-"}
+                    {numberToMoneyFormat(parseFloat(transaction.amount))}
+                    </Typography>
+                  </div>
+                </Card>
               );
             })}
-          </ul>
-        </div>
+          </Paper>
+        </Paper>
 
-        <div className="pichart-display">
+        <Paper className="pichart-display" elevation={5} square>
           {valueSum !== 0 && <ExpenseTrackerChart data={data} />}
-        </div>
-      </div>
+        </Paper>
+      </Paper>
     </>
   );
 }

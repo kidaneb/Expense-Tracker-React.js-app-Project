@@ -10,6 +10,7 @@ import isBudgetResetReducer from "../Features/isBudgetReset";
 import isExpenseResetReducer from "../Features/isExpenseReset";
 import modalReducer from "../Features/modal";
 import transactionItemIdReducer from "../Features/transactionItemId";
+import darkModeReducer from "../Features/isDarkMode";
 export default configureStore({
   reducer: {
     infoArray: infoArrayReducer,
@@ -23,5 +24,6 @@ export default configureStore({
     isExpenseReset: isExpenseResetReducer,
     isModal: modalReducer,
     transactionItemId: transactionItemIdReducer,
+    darkMode: darkModeReducer,
   },
 });
