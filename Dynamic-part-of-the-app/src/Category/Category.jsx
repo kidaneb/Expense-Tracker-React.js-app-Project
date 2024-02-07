@@ -1,27 +1,26 @@
 import { useSelector } from "react-redux";
-import { Card, Paper, Typography } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 
 export function Category() {
-  const infoArray = useSelector((state) => state.infoArray.value);
   const expenseItemsArray = useSelector((state) => state.expenseArray.value);
-  const budget = useSelector((state) => state.budget.value);
   const isexpenseReset = useSelector((state) => state.isExpenseReset.value);
 
   // EXTRACTING CATEGORY ARRAY FROM THE SPENDING CATEGORY ARRAY
-  
+
   let categoryArray = isexpenseReset
     ? []
     : [...new Set(expenseItemsArray.map((item) => item.category))].reverse();
 
   categoryArray = categoryArray.filter((category) => category !== "Budget");
-  
+
   //
   return (
     <>
       {/* <div className="spending-category-title">Spending Catagory</div> */}
-      <Typography variant="h4" className="spending-category-title">Spending Category</Typography>
+      <Typography variant="h4" className="spending-category-title">
+        Spending Category
+      </Typography>
       <div className="spending-categories">
-        
         {categoryArray.map((element, index) => {
           let sum = 0;
           return (
@@ -36,7 +35,6 @@ export function Category() {
             </Card>
           );
         })}
-
       </div>
     </>
   );

@@ -1,11 +1,9 @@
-import { Button, IconButton, Paper, Toolbar, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import { DarkMode, LightMode } from "@mui/icons-material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleDarkMode } from "./Features/isDarkMode";
-import BasicMenu from "./HeaderMenu";
+import { Button, Paper, Toolbar, Typography } from "@mui/material";
 
+import { DarkMode, LightMode } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleDarkMode } from "../../Features/isDarkMode";
+import BasicMenu from "./HeaderMenu";
 
 export function Header() {
   const isDarkMode = useSelector((state) => state.darkMode.value);
@@ -22,10 +20,7 @@ export function Header() {
           }
         >
           <div>
-            {/* <IconButton aria-label="menu" LinkComponent={Link} to="/menu">
-              <MenuIcon />
-            </IconButton> */}
-            <BasicMenu/>
+            <BasicMenu />
           </div>
           <div>
             <Typography variant="h6">Expense Tracker</Typography>
