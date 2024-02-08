@@ -12,13 +12,13 @@ export function BudgetDisplay() {
 
   return (
     <>
-      <Card className="budget-display" elevation={5}>
-        <Typography className="budget-title" sx={{ fontSize: "2rem", color:"rgb(18, 230, 78)" }}>
+      <Card className="budget-display" elevation={5} sx={{overflow:"auto"}}>
+        <Typography className="budget-title" sx={{ fontSize: {xl:"2rem",xs:"1.5rem"}, color:"rgb(18, 230, 78)" }}>
           Budget
         </Typography>
         <Typography
           className="budget-value"
-          sx={{ fontSize: "2rem", color:"rgb(18, 230, 78)" }}
+          sx={{ fontSize: {xl:"2rem",xs:"1.5rem"}, color:"rgb(18, 230, 78)" }}
           ref={budgetRef}
         ></Typography>
       </Card>

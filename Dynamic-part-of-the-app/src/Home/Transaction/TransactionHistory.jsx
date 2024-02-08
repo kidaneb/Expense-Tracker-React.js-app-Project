@@ -9,7 +9,7 @@ export function TransactionHistory() {
     <>
       <Paper className="transaction-history" elevation={5} square>
         <div className="transaction-history-title">
-          <Typography sx={{ fontSize: "1.5rem" }}>
+          <Typography sx={{ fontSize: {xl:"1.5rem",xs:"1.5rem"} }}>
             Transaction History
           </Typography>
         </div>

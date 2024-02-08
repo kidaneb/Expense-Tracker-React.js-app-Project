@@ -12,13 +12,13 @@ export function ExpenseDisplay() {
   });
   return (
     <>
-      <Card className="expense-display" elevation={5}>
-        <Typography className="expense-title" sx={{ fontSize: "2rem",color:"red" }}>
+      <Card className="expense-display" elevation={5} sx={{overflow:"auto"}}>
+        <Typography className="expense-title" sx={{ fontSize: {xl:"2rem",xs:"1.5rem"},color:"red" }}>
           Expense
         </Typography>
         <Typography
           className="expense-value"
-          sx={{ fontSize: "2rem",color:"red" }}
+          sx={{ fontSize: {xl:"2rem",xs:"1.5rem"},color:"red" }}
           ref={expenseRef}
         ></Typography>
       </Card>

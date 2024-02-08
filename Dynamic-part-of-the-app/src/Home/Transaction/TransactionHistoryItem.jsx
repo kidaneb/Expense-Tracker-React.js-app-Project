@@ -27,24 +27,26 @@ export function TransactionHistoryItem({ transaction }) {
         onClick={() => transactionClicked(transaction.id)}
       >
         <div className="transaction-item-label">
-          <Typography>{transaction.label}</Typography>
+          <Typography sx={{fontSize:{xs:"0.9rem"}}}>{transaction.label}</Typography>
         </div>
 
-        <Typography
-        sx={{margin:"1em"}}
-          style={
-            transaction.category === "Budget" ||
+        <div className="transaction-item-amount">
+          <Typography
+            sx={{ margin: "1em" }}
+            style={
+              transaction.category === "Budget" ||
+              transaction.category === "Expense Reset"
+                ? { color: "rgb(18, 230, 78)" }
+                : { color: "red" }
+            }
+          >
+            {transaction.category === "Budget" ||
             transaction.category === "Expense Reset"
-              ? { color: "rgb(18, 230, 78)" }
-              : { color: "red" }
-          }
-        >
-          {transaction.category === "Budget" ||
-          transaction.category === "Expense Reset"
-            ? "+"
-            : "-"}
-          {numberToMoneyFormat(parseFloat(transaction.amount))}
-        </Typography>
+              ? "+"
+              : "-"}
+            {numberToMoneyFormat(parseFloat(transaction.amount))}
+          </Typography>
+        </div>
       </Card>
     </>
   );

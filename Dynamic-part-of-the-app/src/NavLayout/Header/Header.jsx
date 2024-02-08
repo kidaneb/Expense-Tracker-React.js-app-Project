@@ -19,7 +19,7 @@ export function Header() {
               : { borderBottom: "1px solid black" }
           }
         >
-          <div>
+          <div className="menu">
             <BasicMenu />
           </div>
           <div>
